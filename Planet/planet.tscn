@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://bqe47ypuqsy41"]
+
+[ext_resource type="Script" path="res://Planet/planet.gd" id="1_u5xpc"]
+[ext_resource type="Material" uid="uid://2oherdlwra2b" path="res://Planet/planetmattemp.tres" id="2_c4or0"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_2egca"]
+radial_segments = 16
+rings = 8
+
+[node name="Planet" type="Node3D" groups=["Selectable"]]
+script = ExtResource("1_u5xpc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+mesh = SubResource("SphereMesh_2egca")
+surface_material_override/0 = ExtResource("2_c4or0")

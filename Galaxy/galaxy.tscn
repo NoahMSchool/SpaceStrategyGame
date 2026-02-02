@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://cmgn8en274asy"]
+
+[ext_resource type="Script" path="res://Galaxy/galaxy_generator.gd" id="1_dkrcd"]
+[ext_resource type="Script" path="res://commander.gd" id="2_nqbxl"]
+
+[sub_resource type="Environment" id="Environment_7c7pm"]
+background_mode = 1
+
+[node name="Galaxy" type="Node3D"]
+script = ExtResource("1_dkrcd")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_7c7pm")
+
+[node name="Commander" type="Node3D" parent="."]
+script = ExtResource("2_nqbxl")
+
+[node name="Camera3D" type="Camera3D" parent="Commander"]

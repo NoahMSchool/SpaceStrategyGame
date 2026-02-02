@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://dj5fwc8ph1ooa"]
+
+[ext_resource type="Script" path="res://SolarSystem/solar_system.gd" id="1_qll8u"]
+[ext_resource type="Material" uid="uid://cowjujlnsp61q" path="res://Stars/mainsequencemat.tres" id="2_srphr"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_bhdg8"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_t4lb4"]
+radial_segments = 32
+rings = 16
+
+[sub_resource type="SphereMesh" id="SphereMesh_wv7y6"]
+
+[node name="System" type="Area3D" groups=["Selectable", "Viewable"]]
+script = ExtResource("1_qll8u")
+
+[node name="SelectionSphere" type="CollisionShape3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+shape = SubResource("SphereShape3D_bhdg8")
+
+[node name="SunMesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_t4lb4")
+skeleton = NodePath("")
+surface_material_override/0 = ExtResource("2_srphr")
+
+[node name="ViewPoint" type="Node3D" parent="."]
+
+[node name="PlanetContainer" type="Node3D" parent="."]
+
+[node name="SelectionMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+visible = false
+mesh = SubResource("SphereMesh_wv7y6")
+
+[node name="TrailContainer" type="Node3D" parent="."]
+
+[node name="TrailTimer" type="Timer" parent="."]
+wait_time = 0.2
+autostart = true
+
+[connection signal="input_event" from="." to="." method="_mouse_selected"]
+[connection signal="timeout" from="TrailTimer" to="." method="_on_trail_timer_timeout"]
