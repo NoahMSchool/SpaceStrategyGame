@@ -5,6 +5,7 @@ var hovering = false
 
 
 var system_data : SolarSystemData
+var planet_orbit_direction = 1
 
 var system_active = false: 
 	set(value):
@@ -70,8 +71,10 @@ func generate_system():
 	system_data = SolarSystemData.new(pick_weighted_startype())
 	system_data.star_type = pick_weighted_startype()
 	$SunMesh.material_override = system_data.star_type.star_mat
+	$StarLight.light_color = system_data.star_type.star_mat.get_shader_parameter("star_color")
+	print($StarLight.light_color)
 	$SunMesh.scale = Vector3.ONE*system_data.star_type.star_size
-	
+	planet_orbit_direction = [-1,1].pick_random()
 	var planet_count = randi_range(system_data.star_type.planet_range[0],system_data.star_type.planet_range[1])
 	#print(planet_count)
 	var orbit_radius : float = system_data.star_type.star_size
@@ -87,7 +90,6 @@ func generate_system():
 		orbit_radius += randf_range(SpaceInfo.PLANET_SIZE_RANGE[0], SpaceInfo.PLANET_SIZE_RANGE[1])+planet_radius*2
 		orbit_radius += orbit_radius*(1-sqrt(1-orbit_eccentricity**2)) #If neccesary add difference between new major axis and minor axis
 		orbit_radius = orbit_radius #ceilf
-		print("o", orbit_radius)
 		var new_orbit_basis = Basis(Vector3.UP, randf_range(0,TAU))
 		#_planet_radius : float, _planet_color : Color, _major_orbit_radius : float, _orbit_basis : float, _orbit_period : float, _orbit_eccentricity : float
 		var new_planet_data = PlanetData.new(planet_radius, planet_color, orbit_radius, new_orbit_basis, orbit_period, orbit_eccentricity)
@@ -102,7 +104,7 @@ func generate_system():
 #use ecentricity to make eliptical orbits
 func orbit_planets(delta):
 	for p in self.planets:
-		p.planet_data.orbit_angle = p.planet_data.orbit_angle + p.planet_data.angular_velocity*delta
+		p.planet_data.orbit_angle = p.planet_data.orbit_angle + p.planet_data.angular_velocity*delta*planet_orbit_direction
 		var current_orbit = p.planet_data.orbit_angle
 	
 		p.position = p.planet_data.orbit_basis*Vector3(p.planet_data.major_orbit_radius*cos(current_orbit), 0, p.planet_data.minor_orbit_radius*sin(current_orbit))

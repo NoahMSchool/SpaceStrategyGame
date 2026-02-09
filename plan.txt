@@ -5,8 +5,6 @@ System attributes, resources
 moving ships squadron
 
 
-
-
 Use Components for node viewing istead of checking if node has child
 Use components for selectables
 
@@ -16,8 +14,10 @@ Refactor with Skydome
 Next
 
 Make Planets more procedural textures like google illustrations
-Use Blender or GDShader
+Use Blender
+Use primary colors and secondary colors and textures
+
+Use GDShader for stars
+
 
 Move Planet stuff out of system generation
-
-Make orbits eliptical using ecentriccity

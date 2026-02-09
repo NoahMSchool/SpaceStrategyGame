@@ -4,12 +4,13 @@ class_name StarType
 @export var star_name : String
 @export var star_size : float
 @export var observer_star_size : float
-@export var star_mat : StandardMaterial3D
+@export var star_mat : Material
+@export var star_color = Color(0.4,0.35,0.35)
 @export var planet_range : Vector2i
 @export var star_luminosity : float
 @export var prob_weight : float
 
-func _init(_starname : String, _star_size: float, _observer_star_size : float, _star_mat : StandardMaterial3D, _planet_range : Vector2i, _star_luminosity : float, _prob_weight : float):
+func _init(_starname : String, _star_size: float, _observer_star_size : float, _star_mat : Material, _planet_range : Vector2i, _star_luminosity : float, _prob_weight : float):
 	self.star_name = _starname
 	self.star_size = _star_size
 	self.observer_star_size = _observer_star_size

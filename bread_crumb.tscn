@@ -4,8 +4,8 @@
 [ext_resource type="Script" path="res://bread_crumb.gd" id="1_qqc24"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_4xkfn"]
-radius = 0.015
-height = 0.03
+radius = 0.005
+height = 0.01
 radial_segments = 6
 rings = 2
 

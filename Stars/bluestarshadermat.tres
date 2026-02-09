@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dma5kd4x7dai5"]
+
+[ext_resource type="Shader" path="res://Stars/shaderstar.gdshader" id="1_nyhfg"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_nyhfg")
+shader_parameter/star_color = Color(0.458824, 0.517647, 0.886275, 1)
+shader_parameter/emmision_strength = 3.0

@@ -1,13 +1,15 @@
 class_name SpaceInfo
 extends Resource
 
-#_starname : string, _star_size: float, observer_star_size,_star_mat, StandardMaterial3D, _planet_range : Vector2i, _star_luminosity : float, _prob_weight : float
+#_starname : string, _star_size: float, observer_star_size,_star_mat, Material, _planet_range : Vector2i, _star_luminosity : float, _prob_weight : float
 static var startypes: Array[StarType] = [
-	StarType.new("MainSequence", 0.5, 0.25, preload("res://Stars/mainsequencemat.tres"), Vector2i(3,9), 1, 5),
-	StarType.new("WhiteBlue", 0.4, 0.2, preload("res://Stars/bluewhitestar.tres"), Vector2i(1,4), 1, 1),
-	StarType.new("RedDwarf", 0.2, 0.1, preload("res://Stars/redstar.tres"), Vector2i(1,2), 1, 2),
-	StarType.new("RedGiant", 0.9, 0.4, preload("res://Stars/redstar.tres"), Vector2i(1,3), 6, 10)
+	StarType.new("MainSequence", 0.5, 0.25, preload("res://Stars/yellowstarshadermat.tres"), Vector2i(3,9), 1, 5),
+	StarType.new("WhiteBlue", 0.4, 0.2, preload("res://Stars/bluestarshadermat.tres"), Vector2i(1,4), 1, 1),
+	StarType.new("RedDwarf", 0.2, 0.1, preload("res://Stars/redstarshadermat.tres"), Vector2i(1,2), 1, 3),
+	StarType.new("RedGiant", 0.9, 0.4, preload("res://Stars/redstarshadermat.tres"), Vector2i(1,3), 6, 2),
+	#StarType.new("ShaderStar", 0.8, 0.4, preload("res://Stars/shaderstar.tres"), Vector2i(1,3), 6, 20),
 ]
+
 
 const PLANET_SEPARATION_RANGE = [0.1, 0.75]
 const PLANET_SIZE_RANGE = [0.05,0.25]
