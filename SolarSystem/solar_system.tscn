@@ -1,19 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://dj5fwc8ph1ooa"]
+[gd_scene load_steps=6 format=3 uid="uid://dj5fwc8ph1ooa"]
 
 [ext_resource type="Script" path="res://SolarSystem/solar_system.gd" id="1_qll8u"]
-[ext_resource type="Shader" path="res://Stars/shaderstar.gdshader" id="2_6e487"]
+[ext_resource type="Material" uid="uid://bddnby5mfksgp" path="res://Stars/yellowstarshadermat.tres" id="2_q3qrj"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_bhdg8"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_t4lb4"]
 radial_segments = 32
 rings = 16
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5f6uv"]
-render_priority = 0
-shader = ExtResource("2_6e487")
-shader_parameter/star_color = Color(1, 0.5, 0.5, 1)
-shader_parameter/emmision_strength = 1.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_wv7y6"]
 
@@ -32,7 +26,7 @@ omni_attenuation = 2.5
 [node name="SunMesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_t4lb4")
 skeleton = NodePath("")
-surface_material_override/0 = SubResource("ShaderMaterial_5f6uv")
+surface_material_override/0 = ExtResource("2_q3qrj")
 
 [node name="ViewPoint" type="Node3D" parent="."]
 

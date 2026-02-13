@@ -7,3 +7,6 @@ render_priority = 0
 shader = ExtResource("1_nyhfg")
 shader_parameter/star_color = Color(0.458824, 0.517647, 0.886275, 1)
 shader_parameter/emmision_strength = 3.0
+shader_parameter/starspot_color = Color(0.7209, 0.811087, 0.89, 1)
+shader_parameter/spot_speed = 1.0
+shader_parameter/spot_scale = 100.0

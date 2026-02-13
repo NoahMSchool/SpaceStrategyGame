@@ -72,7 +72,6 @@ func generate_system():
 	system_data.star_type = pick_weighted_startype()
 	$SunMesh.material_override = system_data.star_type.star_mat
 	$StarLight.light_color = system_data.star_type.star_mat.get_shader_parameter("star_color")
-	print($StarLight.light_color)
 	$SunMesh.scale = Vector3.ONE*system_data.star_type.star_size
 	planet_orbit_direction = [-1,1].pick_random()
 	var planet_count = randi_range(system_data.star_type.planet_range[0],system_data.star_type.planet_range[1])

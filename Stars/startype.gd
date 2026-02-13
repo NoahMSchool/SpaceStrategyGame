@@ -5,7 +5,6 @@ class_name StarType
 @export var star_size : float
 @export var observer_star_size : float
 @export var star_mat : Material
-@export var star_color = Color(0.4,0.35,0.35)
 @export var planet_range : Vector2i
 @export var star_luminosity : float
 @export var prob_weight : float
