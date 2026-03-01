@@ -4,7 +4,7 @@ const SYSTEM = preload("res://SolarSystem/solar_system.tscn")
 
 
 #in lightyears, typical solar systems are 5-10 apart
-const min_system_separation = 25
+const min_system_separation = 7.5
 const max_system_count = 25
 
 const galaxy_radius = 100
@@ -39,7 +39,7 @@ func _ready() -> void:
 		"""
 	#Generation Two, 
 	for i in range(max_system_count):
-		var height = randf_range(-disc_height, disc_height)
+		var height = randf_range(-disc_height/2, disc_height/2)
 		var angle = randf_range(0, 2*PI)
 		var dir = Vector3(cos(angle), 0, sin(angle))
 		var distance = 0
@@ -58,8 +58,6 @@ func _ready() -> void:
 				
 		pos += Vector3(0,height,0)
 		system_positions.append(pos)
-	
-	
 	
 	for sp in system_positions:
 		var new_system = SYSTEM.instantiate()

@@ -5,8 +5,10 @@ var last_mouse_pos := Vector2.ZERO
 
 var current_system = null
 
-# Called when the node enters the scene tree for the first time.
+@onready var cam : Camera3D = $Camera3D
+
 func _ready() -> void:
+	cam.projection = Camera3D.PROJECTION_PERSPECTIVE
 	await get_tree().process_frame
 	for s in get_tree().get_nodes_in_group("Selectable"):
 		s.connect("selected", select_system)

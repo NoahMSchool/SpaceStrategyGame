@@ -21,3 +21,8 @@ Use GDShader for stars
 
 
 Move Planet stuff out of system generation
+
+
+make top down orthographic view of system
+make map view of system
+move location data into node resources
