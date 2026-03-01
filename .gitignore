@@ -14,3 +14,5 @@ export_credentials.cfg
 .mono/
 data_*/
 mono_crash.*.json
+Planet/.DS_Store
+Planet/planet_textures/.DS_Store
