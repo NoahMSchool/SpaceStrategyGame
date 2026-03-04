@@ -83,12 +83,13 @@ func generate_system():
 		var new_planet = PLANET.instantiate()
 		
 		var planet_color = SpaceInfo.PLANET_COLORS.pick_random()
-		var orbit_period = randf_range(10, 50)
-		var orbit_eccentricity = randf()*0.3
+		var orbit_eccentricity = randf()*0.5
 		
-		orbit_radius += randf_range(SpaceInfo.PLANET_SIZE_RANGE[0], SpaceInfo.PLANET_SIZE_RANGE[1])+planet_radius*2
+		orbit_radius += randf_range(SpaceInfo.PLANET_SIZE_RANGE[0], SpaceInfo.PLANET_SIZE_RANGE[1])+planet_radius*2 #this is the major axis
 		orbit_radius += orbit_radius*(1-sqrt(1-orbit_eccentricity**2)) #If neccesary add difference between new major axis and minor axis
 		orbit_radius = orbit_radius #ceilf
+		var orbit_period = 40*pow(orbit_radius, 1.5)+ randf()*10 #keplers 3rd law
+		print(orbit_period)
 		var new_orbit_basis = Basis(Vector3.UP, randf_range(0,TAU))
 		#_planet_radius : float, _planet_color : Color, _major_orbit_radius : float, _orbit_basis : float, _orbit_period : float, _orbit_eccentricity : float
 		var new_planet_data = PlanetData.new(planet_radius, planet_color, orbit_radius, new_orbit_basis, orbit_period, orbit_eccentricity)
