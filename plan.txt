@@ -28,3 +28,6 @@ make map view of system
 move location data into node resources
 
 Combine birds eye commander and explorercommander
+
+Maybe change planet orbit settings to generic solar system orbit levels.
+Make orbit data be stored by solar system not planet

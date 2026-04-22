@@ -6,10 +6,14 @@ var last_mouse_pos := Vector2.ZERO
 
 @onready var cam : Camera3D = $Camera3D
 
+var last_explorer_angle := Vector3(0,0,0)
+var last_birdseye_camsize := 25
 #enum commander_modes{
 #	EXPLORER,
 #	BIRDSEYE
 #}
+
+
 #var commander_style := commander_modes.BIRDSEYE
 var birdseyecommander := true:
 	set(value):
@@ -79,10 +83,15 @@ func select_system(system : Node3D):
 
 func update_commander_cam():
 	if birdseyecommander:
+		last_explorer_angle = rotation
 		cam.projection = Camera3D.PROJECTION_ORTHOGONAL
-		cam.size = 25
+		cam.size = last_birdseye_camsize
+		
 		global_position.y = 15
 		rotation.x = -90
+		rotation = Vector3(-90,0,0)
 	else:
+		last_birdseye_camsize = cam.size
 		cam.projection = Camera3D.PROJECTION_PERSPECTIVE
+		rotation = last_explorer_angle
 		to_current_system_viewpoint()
