@@ -11,6 +11,7 @@ const galaxy_radius = 100
 const disc_height = 10
 
 var systems : Array[SolarSystem] = []
+var algo := StarAStar3D.new()
 
 func _ready() -> void:
 	#get positions
@@ -65,7 +66,16 @@ func _ready() -> void:
 		new_system.position = sp
 		systems.append(new_system)
 	
-
-
+	algo.set_neighbor_filter_enabled(true)
+	for sys in systems:
+		var id = sys.get_instance_id()
+		algo.add_point(id, sys.position)
+	
+	for sys1 in systems:
+		for sys2 in systems:
+			if sys1 != sys2:
+				algo.connect_points(sys1.get_instance_id(), sys2.get_instance_id())
+	var path = algo.get_id_path(systems[0].get_instance_id(), systems[20].get_instance_id())
+	print(path)
 func _process(delta: float) -> void:
 	pass
