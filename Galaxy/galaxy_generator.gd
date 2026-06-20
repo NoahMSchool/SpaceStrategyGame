@@ -5,7 +5,7 @@ const SYSTEM = preload("res://SolarSystem/solar_system.tscn")
 
 #in lightyears, typical solar systems are 5-10 apart
 const min_system_separation = 7.5
-const max_system_count = 25
+const max_system_count = 10
 
 const galaxy_radius = 100
 const disc_height = 10

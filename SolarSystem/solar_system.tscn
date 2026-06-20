@@ -40,7 +40,7 @@ mesh = SubResource("SphereMesh_wv7y6")
 [node name="TrailContainer" type="Node3D" parent="."]
 
 [node name="TrailTimer" type="Timer" parent="."]
-wait_time = 0.2
+wait_time = 0.5
 autostart = true
 
 [connection signal="input_event" from="." to="." method="_mouse_selected"]

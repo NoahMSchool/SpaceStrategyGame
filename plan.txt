@@ -27,7 +27,13 @@ make top down orthographic view of system
 make map view of system
 move location data into node resources
 
-Combine birds eye commander and explorercommander
-
+Change galaxy generation algorithm so that the system count and separation are fixed and galaxy size is not a fixed parameter
 Maybe change planet orbit settings to generic solar system orbit levels.
 Make orbit data be stored by solar system not planet
+
+
+Strategy
+
+Add edges to graph
+Add ownership of nodes
+Add starter node where players ships expand out of 

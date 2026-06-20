@@ -23,7 +23,7 @@ float hash21(vec2 p) {
 }
 
 void fragment() {
-	
+
 	vec2 cell = round(UV*spot_scale);
 	float random = hash21(cell);
 	float start_phase = 2.0*PI*random;
@@ -33,10 +33,10 @@ void fragment() {
 	current_phase = smoothstep(0.4, 1.0, current_phase);
 	ALBEDO = vec3(0,0,0);
 	EMISSION = mix(star_color, starspot_color , current_phase)*emmision_strength;
-	
 
 
-	
+
+
 }
 
 //void light() {

@@ -73,9 +73,10 @@ func move_system(system_node : Node3D):
 		to_current_system_viewpoint()
 
 func to_current_system_viewpoint():
-	var system_viewpoint = current_system.get_node_or_null("ViewPoint")
-	if system_viewpoint:
-		global_position = system_viewpoint.global_position
+	if current_system:
+		var system_viewpoint = current_system.get_viewpoint()
+		if system_viewpoint:
+			global_position = system_viewpoint.global_position
 
 func select_system(system : Node3D):
 	move_system(system)

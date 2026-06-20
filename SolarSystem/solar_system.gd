@@ -37,6 +37,8 @@ func _process(delta: float) -> void:
 		pass
 		#$SelectionMesh.visible = false
 				
+func get_viewpoint():
+	return get_node_or_null("ViewPoint")
 
 func update_system_activation():
 	#print("setting system activation to ", system_active)
