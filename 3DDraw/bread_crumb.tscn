@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://djeh28epd1rc3"]
 
 [ext_resource type="Material" uid="uid://d3pds1v1gidsl" path="res://Retired/bluewhitestar.tres" id="1_nmeou"]
-[ext_resource type="Script" uid="uid://cbcwpdsci2yhq" path="res://bread_crumb.gd" id="1_qqc24"]
+[ext_resource type="Script" uid="uid://cbcwpdsci2yhq" path="res://3DDraw/bread_crumb.gd" id="1_qqc24"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_4xkfn"]
 radius = 0.005
