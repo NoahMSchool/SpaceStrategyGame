@@ -25,3 +25,8 @@ func draw_line(pos1: Vector3, pos2: Vector3, color = Color.WHITE_SMOKE):
 	
 	#get_tree().get_root().
 	add_child(mesh_instance)
+"""
+func draw_elipse(center : Vector3, major_axis : float, minor_axis: float, rotation : float, resolution : float)
+	for i in resolution:
+		var.position = rotation*Vector3(major_axis*cos(current_orbit), 0, p.planet_data.minor_orbit_radius*sin(current_orbit))
+"""
