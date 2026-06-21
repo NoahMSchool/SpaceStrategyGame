@@ -78,7 +78,7 @@ func _ready() -> void:
 			if sys1 != sys2:
 				algo.connect_points(sys1.get_instance_id(), sys2.get_instance_id())
 				if sys1.position.distance_to(sys2.position)<15:
-					_3dDraw.draw_line(sys1.position,sys2.position)
+					Draw3D.draw_line(sys1.position,sys2.position)
 	var path = algo.get_id_path(systems[0].get_instance_id(), systems[2].get_instance_id())
 	
 	print(path)

@@ -19,6 +19,10 @@ run/main_scene="res://Galaxy/galaxy.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Draw3D="*uid://d2o8h77n5tks4"
+
 [global_group]
 
 Selectable=""

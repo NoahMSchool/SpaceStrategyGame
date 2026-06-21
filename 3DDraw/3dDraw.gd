@@ -1,5 +1,5 @@
 extends Node
-class_name Draw3D
+#class_name Draw3D
 
 const CONTAINER_PATH = ""
 
