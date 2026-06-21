@@ -118,8 +118,6 @@ make more of these ranges
 add brightness
 not using planet range currently
 
-
-
 print("before")
 		var new_planet_trail_mesh = TubeTrailMesh.new()
 		var new_planet_trail_mesh_curve = Curve3D.new()
@@ -143,5 +141,5 @@ func _on_trail_timer_timeout() -> void:
 	if not system_active:
 		return
 	for p in planets:
-		Draw3D.draw_point_mesh(p.position, p.planet_data.orbit_period)
+		Draw3D.draw_point_mesh(p.global_position, p.planet_data.orbit_period)
 	$TrailTimer.start()

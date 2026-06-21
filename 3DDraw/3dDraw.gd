@@ -14,7 +14,7 @@ func draw_point_mesh(pos : Vector3, ttl : float): #, size : float, resolution,
 	get_node(CONTAINER_PATH).add_child(new_bread_crumb)
 	
 
-func draw_line(pos1: Vector3, pos2: Vector3, color = Color.WHITE_SMOKE):
+func draw_line(pos1: Vector3, pos2: Vector3, color = Color("#333333", 0.2)):
 	var mesh_instance := MeshInstance3D.new()
 	var immediate_mesh := ImmediateMesh.new()
 	var material := ORMMaterial3D.new()
@@ -28,12 +28,9 @@ func draw_line(pos1: Vector3, pos2: Vector3, color = Color.WHITE_SMOKE):
 
 	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	material.albedo_color = color
-	
-	#get_tree().get_root().
-	add_child(mesh_instance)
+	get_node(CONTAINER_PATH).add_child(mesh_instance)
 """
 func draw_elipse(center : Vector3, major_axis : float, minor_axis: float, rotation : float, resolution : float)
 	for i in resolution:
 		var.position = rotation*Vector3(major_axis*cos(current_orbit), 0, p.planet_data.minor_orbit_radius*sin(current_orbit))
 """
-	get_node(CONTAINER_PATH).add_child(mesh_instance)

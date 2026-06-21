@@ -63,7 +63,7 @@ func _ready() -> void:
 	print(system_positions.size())
 	for sp in system_positions:
 		var new_system = SYSTEM.instantiate()
-		add_child(new_system)
+		$SystemContainer.add_child(new_system)
 		new_system.position = sp
 		new_system.rotation = Vector3.ZERO
 		systems.append(new_system)
