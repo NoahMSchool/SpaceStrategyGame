@@ -16,7 +16,6 @@ var planets : Array[Planet] = []
 signal selected(node_selected : Node3D)
 
 const PLANET = preload("res://Planet/planet.tscn")
-const BREAD_CRUMB = preload("res://bread_crumb.tscn")
 
 func _ready() -> void:
 	generate_system()
@@ -144,9 +143,5 @@ func _on_trail_timer_timeout() -> void:
 	if not system_active:
 		return
 	for p in planets:
-		var new_bread_crumb = BREAD_CRUMB.instantiate()
-		new_bread_crumb.ttl = p.planet_data.orbit_period
-		new_bread_crumb.position = p.position
-		#print(new_bread_crumb.position)
-		$TrailContainer.add_child(new_bread_crumb)
+		Draw3D.draw_point_mesh(p.position, p.planet_data.orbit_period)
 	$TrailTimer.start()
