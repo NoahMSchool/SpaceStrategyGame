@@ -1,7 +1,7 @@
 class_name StarAStar3D
 extends AStar3D
 
-var max_distance = 25
+@export var max_distance = 25
 
 func _filter_neighbor(from_id: int, neighbor_id: int) -> bool:
 	var from_star = instance_from_id(from_id)

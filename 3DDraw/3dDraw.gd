@@ -11,6 +11,12 @@ func draw_point_mesh(pos : Vector3, ttl : float): #, size : float, resolution,
 	new_bread_crumb.position = pos
 	get_node(CONTAINER_PATH).add_child(new_bread_crumb)
 
+func delete_planet_lines():
+	var parent = get_node(CONTAINER_PATH)
+	for n in parent.get_children():
+		parent.remove_child(n)
+		n.queue_free()
+
 func draw_line(pos1: Vector3, pos2: Vector3, color = Color("#333333", 0.2)):
 	var mesh_instance := MeshInstance3D.new()
 	var immediate_mesh := ImmediateMesh.new()

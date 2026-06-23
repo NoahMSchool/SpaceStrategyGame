@@ -6,6 +6,14 @@ const SYSTEM = preload("res://SolarSystem/solar_system.tscn")
 #in lightyears, typical solar systems are 5-10 apart
 @export var min_system_separation = 7.5
 @export var max_system_count = 15
+@export var max_connection_distance = 15 : 
+	set (val):
+		print("Changing Max Connection to", val)
+		max_connection_distance = val
+		algo = set_up_astar(max_connection_distance)
+
+		
+	
 
 #const galaxy_radius = 100
 @export var disc_height = 10
@@ -68,20 +76,31 @@ func _ready() -> void:
 		new_system.position = sp
 		new_system.rotation = Vector3.ZERO
 		systems.append(new_system)
+		
+	algo = set_up_astar(max_connection_distance)
 	
-	algo.set_neighbor_filter_enabled(true)
+		
+func set_up_astar(max_distance):
+	var new_algo := StarAStar3D.new()
+
+	new_algo.set_neighbor_filter_enabled(true)
+	new_algo.max_distance = max_distance
 	for sys in systems:
 		var id = sys.get_instance_id()
-		algo.add_point(id, sys.position)
+		new_algo.add_point(id, sys.position)
 	
+	Draw3D.delete_planet_lines()
 	for sys1 in systems:
 		for sys2 in systems:
 			if sys1 != sys2:
-				algo.connect_points(sys1.get_instance_id(), sys2.get_instance_id())
-				if sys1.position.distance_to(sys2.position)<15:
+				new_algo.connect_points(sys1.get_instance_id(), sys2.get_instance_id())
+				if sys1.position.distance_to(sys2.position)<max_distance:
 					Draw3D.draw_line(sys1.position,sys2.position)
-	var path = algo.get_id_path(systems[0].get_instance_id(), systems[2].get_instance_id())
+	var path = new_algo.get_id_path(systems[0].get_instance_id(), systems[2].get_instance_id())
 	
 	print(path)
+	return new_algo
+
+	
 func _process(delta: float) -> void:
 	pass
