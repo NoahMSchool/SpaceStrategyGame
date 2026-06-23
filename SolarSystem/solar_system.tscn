@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cxt6hjfkvjvpl" path="res://SolarSystem/solar_system.gd" id="1_qll8u"]
 [ext_resource type="Material" uid="uid://bddnby5mfksgp" path="res://Stars/yellowstarshadermat.tres" id="2_q3qrj"]
-[ext_resource type="PackedScene" uid="uid://dm0pig2dlqo0e" path="res://ship_resource.tscn" id="3_8jpt8"]
+[ext_resource type="PackedScene" uid="uid://dm0pig2dlqo0e" path="res://Resources/ship_resource.tscn" id="3_8jpt8"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_bhdg8"]
 

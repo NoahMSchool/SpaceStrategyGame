@@ -4,6 +4,7 @@ class_name SolarSystem
 var hovering = false
 
 const BREAD_CRUMB = preload("res://3DDraw/bread_crumb.tscn")
+const SHIP_RESOURCE = preload("res://Resources/ship_resource.tscn")
 
 var system_data : SolarSystemData
 var planet_orbit_direction = 1
@@ -138,6 +139,9 @@ p.trail.mesh.curve.add_point(p.position)
 		
 """
 
+func generate_resource():
+	return
+	
 
 func _on_trail_timer_timeout() -> void:
 	if not system_active:

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dm0pig2dlqo0e"]
 
-[ext_resource type="Script" uid="uid://cljpkthi0yd48" path="res://ship_resource.gd" id="1_oex7v"]
+[ext_resource type="Script" uid="uid://cljpkthi0yd48" path="res://Resources/ship_resource.gd" id="1_oex7v"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oex7v"]
 

@@ -82,6 +82,11 @@ func _ready() -> void:
 		
 func set_up_astar(max_distance):
 	var new_algo := StarAStar3D.new()
+	print("Generating with max ", max_distance, " and systems ", systems.size())
+
+	if (!systems.size()):
+		return new_algo
+		
 
 	new_algo.set_neighbor_filter_enabled(true)
 	new_algo.max_distance = max_distance
@@ -96,6 +101,7 @@ func set_up_astar(max_distance):
 				new_algo.connect_points(sys1.get_instance_id(), sys2.get_instance_id())
 				if sys1.position.distance_to(sys2.position)<max_distance:
 					Draw3D.draw_line(sys1.position,sys2.position)
+	print("We have systems ", systems.size())
 	var path = new_algo.get_id_path(systems[0].get_instance_id(), systems[2].get_instance_id())
 	
 	print(path)

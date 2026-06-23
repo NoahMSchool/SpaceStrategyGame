@@ -13,9 +13,10 @@ func draw_point_mesh(pos : Vector3, ttl : float): #, size : float, resolution,
 
 func delete_planet_lines():
 	var parent = get_node(CONTAINER_PATH)
-	for n in parent.get_children():
-		parent.remove_child(n)
-		n.queue_free()
+	if parent:
+		for n in parent.get_children():
+			parent.remove_child(n)
+			n.queue_free()
 
 func draw_line(pos1: Vector3, pos2: Vector3, color = Color("#333333", 0.2)):
 	var mesh_instance := MeshInstance3D.new()
