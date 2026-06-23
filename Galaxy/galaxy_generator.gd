@@ -4,11 +4,11 @@ const SYSTEM = preload("res://SolarSystem/solar_system.tscn")
 
 
 #in lightyears, typical solar systems are 5-10 apart
-const min_system_separation = 7.5
-const max_system_count = 15
+@export var min_system_separation = 7.5
+@export var max_system_count = 15
 
 #const galaxy_radius = 100
-const disc_height = 10
+@export var disc_height = 10
 
 var systems : Array[SolarSystem] = []
 var root_system : SolarSystem
