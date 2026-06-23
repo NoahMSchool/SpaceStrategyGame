@@ -107,6 +107,10 @@ func set_up_astar(max_distance):
 	print(path)
 	return new_algo
 
+func get_target_system():
+	if (systems.size() > 0):
+		return systems[0]
+	return null
 	
 func _process(delta: float) -> void:
 	pass

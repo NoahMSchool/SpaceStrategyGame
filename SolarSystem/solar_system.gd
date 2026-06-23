@@ -19,6 +19,7 @@ signal selected(node_selected : Node3D)
 
 const PLANET = preload("res://Planet/planet.tscn")
 
+@onready var galaxy = get_tree().current_scene
 func _ready() -> void:
 	generate_system()
 	$ViewPoint.position = Vector3(0,0.5+system_data.star_type.star_size,0)
@@ -154,6 +155,7 @@ func generate_resource():
 	var new_resource = SHIP_RESOURCE.instantiate()
 	$ShipResourceContainer.add_child(new_resource)
 	new_resource.position = new_resource.position + Vector3(0,0.125,0)* $ShipResourceContainer.get_child_count()
+	new_resource.destination = 	galaxy.get_target_system()
 	return  
 	
 
