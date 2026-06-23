@@ -58,6 +58,11 @@ func _mouse_selected(camera: Node, event: InputEvent, event_position: Vector3, n
 	hovering = true
 	if Input.is_action_just_pressed("LeftMouse"):
 		selected.emit(self)
+		
+func _input(event: InputEvent) -> void:
+	if system_active && Input.is_action_just_pressed("r"):
+		print("Generating Resource")
+		generate_resource()
 
 func pick_weighted_startype() -> StarType:
 	var total_weight_sum : float = 0.0
@@ -104,6 +109,12 @@ func generate_system():
 		#$PlanetContainer.add_child(planet_ellipse)
 		$PlanetContainer.add_child(new_planet)
 		new_planet.update_planet()
+		
+	generate_resource()
+	generate_resource()
+	generate_resource()
+
+
 
 #use ecentricity to make eliptical orbits
 func orbit_planets(delta):
@@ -140,7 +151,10 @@ p.trail.mesh.curve.add_point(p.position)
 """
 
 func generate_resource():
-	return
+	var new_resource = SHIP_RESOURCE.instantiate()
+	$ShipResourceContainer.add_child(new_resource)
+	new_resource.position = new_resource.position + Vector3(0,0.125,0)* $ShipResourceContainer.get_child_count()
+	return  
 	
 
 func _on_trail_timer_timeout() -> void:
