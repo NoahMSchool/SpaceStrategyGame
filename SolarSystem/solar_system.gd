@@ -3,6 +3,7 @@ class_name SolarSystem
 
 var hovering = false
 
+const BREAD_CRUMB = preload("res://3DDraw/bread_crumb.tscn")
 
 var system_data : SolarSystemData
 var planet_orbit_direction = 1
@@ -98,7 +99,8 @@ func generate_system():
 		
 		#new_planet.position.x = new_planet.planet_data.orbit_radius
 		planets.append(new_planet)
-		
+		#var planet_ellipse = Draw3D.draw_elipse(position, orbit_radius, orbit_radius, new_orbit_basis, 12)
+		#$PlanetContainer.add_child(planet_ellipse)
 		$PlanetContainer.add_child(new_planet)
 		new_planet.update_planet()
 
@@ -141,5 +143,9 @@ func _on_trail_timer_timeout() -> void:
 	if not system_active:
 		return
 	for p in planets:
-		Draw3D.draw_point_mesh(p.global_position, p.planet_data.orbit_period)
+		var new_bread_crumb = BREAD_CRUMB.instantiate()
+		new_bread_crumb.ttl = p.planet_data.orbit_period
+		new_bread_crumb.position = p.position
+		$TrailContainer.add_child(new_bread_crumb)
+		#Draw3D.draw_point_mesh(p.global_position, p.planet_data.orbit_period)
 	$TrailTimer.start()

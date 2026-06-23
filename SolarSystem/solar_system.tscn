@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cxt6hjfkvjvpl" path="res://SolarSystem/solar_system.gd" id="1_qll8u"]
 [ext_resource type="Material" uid="uid://bddnby5mfksgp" path="res://Stars/yellowstarshadermat.tres" id="2_q3qrj"]
+[ext_resource type="PackedScene" uid="uid://dm0pig2dlqo0e" path="res://ship_resource.tscn" id="3_8jpt8"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_bhdg8"]
 
@@ -11,7 +12,7 @@ rings = 16
 
 [sub_resource type="SphereMesh" id="SphereMesh_wv7y6"]
 
-[node name="System" type="Area3D" unique_id=540009203 groups=["Selectable", "Viewable"]]
+[node name="SolarSystem" type="Area3D" unique_id=540009203 groups=["Selectable", "Viewable"]]
 script = ExtResource("1_qll8u")
 
 [node name="SelectionSphere" type="CollisionShape3D" parent="." unique_id=927894171]
@@ -30,18 +31,24 @@ surface_material_override/0 = ExtResource("2_q3qrj")
 
 [node name="ViewPoint" type="Node3D" parent="." unique_id=601354782]
 
-[node name="PlanetContainer" type="Node3D" parent="." unique_id=1124145860]
-
 [node name="SelectionMesh" type="MeshInstance3D" parent="." unique_id=1980739757]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 visible = false
 mesh = SubResource("SphereMesh_wv7y6")
 
-[node name="TrailContainer" type="Node3D" parent="." unique_id=518089550]
-
 [node name="TrailTimer" type="Timer" parent="." unique_id=879202102]
 wait_time = 0.5
 autostart = true
+
+[node name="PlanetContainer" type="Node3D" parent="." unique_id=1124145860]
+
+[node name="TrailContainer" type="Node3D" parent="." unique_id=518089550]
+
+[node name="ShipResourceContainer" type="Node3D" parent="." unique_id=2060881521]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="ShipResource" parent="ShipResourceContainer" unique_id=1299991569 instance=ExtResource("3_8jpt8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
 
 [connection signal="input_event" from="." to="." method="_mouse_selected"]
 [connection signal="timeout" from="TrailTimer" to="." method="_on_trail_timer_timeout"]

@@ -11,6 +11,7 @@ const max_system_count = 15
 const disc_height = 10
 
 var systems : Array[SolarSystem] = []
+var root_system : SolarSystem
 var algo := StarAStar3D.new()
 
 func _ready() -> void:
