@@ -154,11 +154,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			for r in $ShipResourceContainer.get_children():
 				eject_resource(r)
 
-
 func generate_resource():
+	var per_row = 10
 	var new_resource = SHIP_RESOURCE.instantiate()
 	$ShipResourceContainer.add_child(new_resource)
-	new_resource.position = new_resource.position + Vector3(0,0.125,0)* $ShipResourceContainer.get_child_count()
+	var x_off = ($ShipResourceContainer.get_child_count() - 1) / per_row
+	var y_off = ($ShipResourceContainer.get_child_count() - 1) % per_row
+	new_resource.position = new_resource.position + Vector3(0,0.125,0)* x_off + Vector3(0, 0, 0.3) * y_off
 	new_resource.destination = 	galaxy.get_target_system()
 	
 	return 
