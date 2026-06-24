@@ -5,7 +5,9 @@ var destination : SolarSystem
 var in_transmission:= false
 
 func begin_transmission():
-	in_transmission = true
+	if destination:
+		in_transmission = true
+		look_at(destination.position)
 	
 func end_transmission():
 	in_transmission = false

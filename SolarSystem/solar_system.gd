@@ -121,6 +121,8 @@ func orbit_planets(delta):
 	
 		p.position = p.planet_data.orbit_basis*Vector3(p.planet_data.major_orbit_radius*cos(current_orbit), 0, p.planet_data.minor_orbit_radius*sin(current_orbit))
 
+func orbit_resources():
+	pass
 
 """
 For Star
@@ -150,7 +152,6 @@ p.trail.mesh.curve.add_point(p.position)
 func _unhandled_input(event: InputEvent) -> void:
 		if Input.is_action_just_pressed("m"):
 			for r in $ShipResourceContainer.get_children():
-				print(r.global_position)
 				eject_resource(r)
 
 
@@ -163,15 +164,26 @@ func generate_resource():
 	return 
 
 func eject_resource(res):
-	res.begin_transmission()
-	var global_pos = res.global_position
-	$ShipResourceContainer.remove_child(res)
-	galaxy.add_free_resource(res, global_pos)
+	if (res.destination):
+		res.begin_transmission()
+		var global_pos = res.global_position
+		$ShipResourceContainer.remove_child(res)
+		galaxy.add_free_resource(res, global_pos)
+		print("Ejecting!", res.name)
 
 func receive_resource(res):
-	$ShipResourceContainer.add_child(res)
+	galaxy.detach_free_resource(res)
+	res.queue_free()
+	generate_resource()
+	# $ShipResourceContainer.add_child(res)
+	# res.destination = null
 	#if self == res.destination:
-	res.end_transmission()
+	# res.end_transmission()
+	# res.position = res.position + Vector3(0,0.125,0)* $ShipResourceContainer.get_child_count()
+
+	print("Now I have ", self.name, " ", $ShipResourceContainer.get_child_count(), " ", res.name)
+
+	
 	
 func _on_trail_timer_timeout() -> void:
 	if not system_active:
@@ -185,3 +197,4 @@ func _on_trail_timer_timeout() -> void:
 	
 func _on_resource_timer_timeout() -> void:
 	generate_resource()
+	

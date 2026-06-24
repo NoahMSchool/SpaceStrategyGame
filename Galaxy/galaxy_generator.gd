@@ -5,7 +5,7 @@ const SYSTEM = preload("res://SolarSystem/solar_system.tscn")
 
 #in lightyears, typical solar systems are 5-10 apart
 @export var min_system_separation = 7.5
-@export var max_system_count = 15
+@export var max_system_count = 5
 @export var max_connection_distance = 15 : 
 	set (val):
 		print("Changing Max Connection to", val)
@@ -115,7 +115,11 @@ func get_target_system():
 func add_free_resource(resource_node, global_pos):
 	$FreeShipContiner.add_child(resource_node)
 	resource_node.global_position = global_pos
-	print(resource_node.global_position)
+	
+func detach_free_resource(resource_node):
+	$FreeShipContiner.remove_child(resource_node)
+	
+
 	
 	
 func _process(delta: float) -> void:
