@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cmgn8en274asy"]
 
 [ext_resource type="Script" uid="uid://5rn5nd5weo2e" path="res://Galaxy/galaxy_generator.gd" id="1_dkrcd"]
-[ext_resource type="Script" uid="uid://dvl4fbny6m7dd" path="res://explorercommander.gd" id="2_kf2id"]
+[ext_resource type="Script" uid="uid://f2fh2hwipnui" path="res://explorercommander.gd" id="2_kf2id"]
 
 [sub_resource type="Environment" id="Environment_7c7pm"]
 background_mode = 1
@@ -23,3 +23,5 @@ script = ExtResource("2_kf2id")
 [node name="SystemContainer" type="Node3D" parent="." unique_id=344423846]
 
 [node name="3DDraw" type="Node3D" parent="." unique_id=2115399290]
+
+[node name="FreeShipContiner" type="Node3D" parent="." unique_id=1231535771]

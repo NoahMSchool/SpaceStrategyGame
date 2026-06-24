@@ -151,12 +151,31 @@ p.trail.mesh.curve.add_point(p.position)
 		
 """
 
+func _unhandled_input(event: InputEvent) -> void:
+		if Input.is_action_just_pressed("m"):
+			for r in $ShipResourceContainer.get_children():
+				print(r.global_position)
+				eject_resource(r)
+
+
 func generate_resource():
 	var new_resource = SHIP_RESOURCE.instantiate()
 	$ShipResourceContainer.add_child(new_resource)
 	new_resource.position = new_resource.position + Vector3(0,0.125,0)* $ShipResourceContainer.get_child_count()
 	new_resource.destination = 	galaxy.get_target_system()
-	return  
+	
+	return 
+
+func eject_resource(res):
+	res.in_transmission = true
+	var global_pos = res.global_position
+	$ShipResourceContainer.remove_child(res)
+	galaxy.add_free_resource(res, global_pos)
+
+func receive_resource(res):
+	$ShipResourceContainer.add_child(res)
+	#if self == res.destination:
+	res.in_transmission = false
 	
 
 func _on_trail_timer_timeout() -> void:

@@ -111,6 +111,12 @@ func get_target_system():
 	if (systems.size() > 0):
 		return systems[0]
 	return null
+
+func add_free_resource(resource_node, global_pos):
+	$FreeShipContiner.add_child(resource_node)
+	resource_node.global_position = global_pos
+	print(resource_node.global_position)
+	
 	
 func _process(delta: float) -> void:
 	pass

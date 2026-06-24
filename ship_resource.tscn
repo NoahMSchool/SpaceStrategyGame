@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://kq3yskyn70wh"]
+
+[ext_resource type="Script" uid="uid://cljpkthi0yd48" path="res://Resources/ship_resource.gd" id="1_oex7v"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oex7v"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_oex7v"]
+material = SubResource("StandardMaterial3D_oex7v")
+size = Vector3(0.1, 0.1, 0.2)
+
+[node name="ShipResource" type="Node3D" unique_id=1299991569]
+script = ExtResource("1_oex7v")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=167750049]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0014332533)
+mesh = SubResource("BoxMesh_oex7v")
