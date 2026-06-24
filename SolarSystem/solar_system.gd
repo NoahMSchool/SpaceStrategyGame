@@ -183,17 +183,17 @@ func eject_resource(res):
 			# print("Ejecting!", res.name)
 
 func receive_resource(res):
-	galaxy.detach_free_resource(res)
-	res.queue_free()
-	generate_resource()
+	if self != res.final_destination:
+		eject_resource(res)
+	else:
+		galaxy.detach_free_resource(res)
+		res.queue_free()
+		generate_resource()
 	# $ShipResourceContainer.add_child(res)
 	# res.destination = null
 	#if self == res.destination:
 	# res.end_transmission()
 	# res.position = res.position + Vector3(0,0.125,0)* $ShipResourceContainer.get_child_count()
-
-	print("Now I have ", self.name, " ", $ShipResourceContainer.get_child_count(), " ", res.name)
-
 	
 	
 func _on_trail_timer_timeout() -> void:

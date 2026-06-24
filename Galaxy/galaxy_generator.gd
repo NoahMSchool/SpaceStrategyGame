@@ -109,7 +109,6 @@ func get_next_step(from, to):
 		var path = algo.get_id_path(from.get_instance_id(), to.get_instance_id())
 		if path and path.size() > 1:
 			next = instance_from_id(path[1])
-			print(path)
 	return next
 
 func get_target_system():
