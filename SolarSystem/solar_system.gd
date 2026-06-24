@@ -110,10 +110,6 @@ func generate_system():
 		#$PlanetContainer.add_child(planet_ellipse)
 		$PlanetContainer.add_child(new_planet)
 		new_planet.update_planet()
-		
-	generate_resource()
-	generate_resource()
-	generate_resource()
 
 
 
@@ -167,7 +163,7 @@ func generate_resource():
 	return 
 
 func eject_resource(res):
-	res.in_transmission = true
+	res.begin_transmission()
 	var global_pos = res.global_position
 	$ShipResourceContainer.remove_child(res)
 	galaxy.add_free_resource(res, global_pos)
@@ -175,9 +171,8 @@ func eject_resource(res):
 func receive_resource(res):
 	$ShipResourceContainer.add_child(res)
 	#if self == res.destination:
-	res.in_transmission = false
+	res.end_transmission()
 	
-
 func _on_trail_timer_timeout() -> void:
 	if not system_active:
 		return
@@ -187,4 +182,6 @@ func _on_trail_timer_timeout() -> void:
 		new_bread_crumb.position = p.position
 		$TrailContainer.add_child(new_bread_crumb)
 		#Draw3D.draw_point_mesh(p.global_position, p.planet_data.orbit_period)
-	$TrailTimer.start()
+	
+func _on_resource_timer_timeout() -> void:
+	generate_resource()
