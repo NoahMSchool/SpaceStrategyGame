@@ -5,7 +5,7 @@ const SYSTEM = preload("res://SolarSystem/solar_system.tscn")
 
 #in lightyears, typical solar systems are 5-10 apart
 @export var min_system_separation = 7.5
-@export var max_system_count = 5
+@export var max_system_count = 10
 @export var max_connection_distance = 15 : 
 	set (val):
 		print("Changing Max Connection to", val)
@@ -87,7 +87,6 @@ func set_up_astar(max_distance):
 	if (!systems.size()):
 		return new_algo
 		
-
 	new_algo.set_neighbor_filter_enabled(true)
 	new_algo.max_distance = max_distance
 	for sys in systems:
@@ -101,11 +100,17 @@ func set_up_astar(max_distance):
 				new_algo.connect_points(sys1.get_instance_id(), sys2.get_instance_id())
 				if sys1.position.distance_to(sys2.position)<max_distance:
 					Draw3D.draw_line(sys1.position,sys2.position)
-	print("We have systems ", systems.size())
-	var path = new_algo.get_id_path(systems[0].get_instance_id(), systems[2].get_instance_id())
-	
-	print(path)
+	print("We have systems ", systems.size())	
 	return new_algo
+	
+func get_next_step(from, to):
+	var next = null
+	if from and to and from != to:
+		var path = algo.get_id_path(from.get_instance_id(), to.get_instance_id())
+		if path and path.size() > 1:
+			next = instance_from_id(path[1])
+			print(path)
+	return next
 
 func get_target_system():
 	if (systems.size() > 0):

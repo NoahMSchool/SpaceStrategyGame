@@ -1,7 +1,9 @@
 extends Node3D
 class_name ShipResource
 
+var final_destination : SolarSystem
 var destination : SolarSystem
+
 var in_transmission:= false
 
 func begin_transmission():

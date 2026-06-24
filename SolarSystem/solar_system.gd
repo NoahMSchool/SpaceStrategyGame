@@ -65,6 +65,14 @@ func _input(event: InputEvent) -> void:
 		print("Generating Resource")
 		generate_resource()
 
+	if Input.is_action_just_pressed("m"):
+		for r in $ShipResourceContainer.get_children():
+			eject_resource(r)
+			
+	if Input.is_action_just_pressed("x"):
+		print("Toggle time to ", !$ResourceTimer.paused)
+		$ResourceTimer.paused = !$ResourceTimer.paused
+		
 func pick_weighted_startype() -> StarType:
 	var total_weight_sum : float = 0.0
 	for st in SpaceInfo.startypes:
@@ -148,11 +156,9 @@ print("before")
 p.trail.mesh.curve.add_point(p.position)
 		
 """
-
-func _unhandled_input(event: InputEvent) -> void:
-		if Input.is_action_just_pressed("m"):
-			for r in $ShipResourceContainer.get_children():
-				eject_resource(r)
+	
+			
+			
 
 func generate_resource():
 	var per_row = 10
@@ -160,18 +166,21 @@ func generate_resource():
 	$ShipResourceContainer.add_child(new_resource)
 	var x_off = ($ShipResourceContainer.get_child_count() - 1) / per_row
 	var y_off = ($ShipResourceContainer.get_child_count() - 1) % per_row
-	new_resource.position = new_resource.position + Vector3(0,0.125,0)* x_off + Vector3(0, 0, 0.3) * y_off
-	new_resource.destination = 	galaxy.get_target_system()
+	new_resource.position = new_resource.position + Vector3(0.125,0,0)* x_off + Vector3(0, 0, 0.3) * y_off
+	new_resource.final_destination = galaxy.get_target_system()
 	
 	return 
 
 func eject_resource(res):
-	if (res.destination):
-		res.begin_transmission()
-		var global_pos = res.global_position
-		$ShipResourceContainer.remove_child(res)
-		galaxy.add_free_resource(res, global_pos)
-		print("Ejecting!", res.name)
+	if (res.final_destination and res.final_destination != self):
+		var next_destination = galaxy.get_next_step(self, res.final_destination)
+		if next_destination:
+			res.destination = next_destination
+			res.begin_transmission()
+			var global_pos = res.global_position
+			$ShipResourceContainer.remove_child(res)
+			galaxy.add_free_resource(res, global_pos)
+			# print("Ejecting!", res.name)
 
 func receive_resource(res):
 	galaxy.detach_free_resource(res)
