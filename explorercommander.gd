@@ -89,8 +89,7 @@ func update_commander_cam():
 		cam.size = last_birdseye_camsize
 		
 		global_position.y = 15
-		rotation.x = -90
-		rotation = Vector3(-90,0,0)
+		rotation = Vector3(-PI/2,0,0)
 	else:
 		last_birdseye_camsize = cam.size
 		cam.projection = Camera3D.PROJECTION_PERSPECTIVE
