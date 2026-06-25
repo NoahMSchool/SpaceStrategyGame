@@ -98,7 +98,7 @@ func generate_system():
 		
 		var planet_radius = randf_range(SpaceInfo.PLANET_SIZE_RANGE[0], SpaceInfo.PLANET_SIZE_RANGE[1])*0.5 #planet mesh import has radius 2
 		var new_planet = PLANET.instantiate()
-		
+		new_planet.name = "Planet" + str(i)
 		var planet_color = SpaceInfo.PLANET_COLORS.pick_random()
 		var orbit_eccentricity = randf()*0.5
 		

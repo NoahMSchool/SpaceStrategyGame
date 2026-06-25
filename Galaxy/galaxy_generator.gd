@@ -70,11 +70,13 @@ func _ready() -> void:
 		system_positions.append(pos)
 	
 	print(system_positions.size())
-	for sp in system_positions:
+	for i in range(system_positions.size()-1):
+		var sp = system_positions[i]
 		var new_system = SYSTEM.instantiate()
 		$SystemContainer.add_child(new_system)
 		new_system.position = sp
 		new_system.rotation = Vector3.ZERO
+		new_system.name = "System" + str(i)
 		systems.append(new_system)
 		
 	algo = set_up_astar(max_connection_distance)
