@@ -18,7 +18,7 @@ func delete_planet_lines():
 			parent.remove_child(n)
 			n.queue_free()
 
-func draw_line(pos1: Vector3, pos2: Vector3, color = Color("#FFFFFF", 0.2)):
+func draw_line(pos1: Vector3, pos2: Vector3, color = Color("#A0A0A0", 0.2)):
 	var mesh_instance := MeshInstance3D.new()
 	var immediate_mesh := ImmediateMesh.new()
 	var material := ORMMaterial3D.new()

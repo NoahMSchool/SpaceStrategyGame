@@ -1,7 +1,31 @@
 extends Node3D
 class_name SolarSystem
+enum TEAM {NEUTRAL, RED, BLUE, GREEN}
 
+var team_ownership = TEAM.NEUTRAL:
+	set(value):
+		team_ownership = value
+		match value:
+			TEAM.NEUTRAL:
+				visual_indicator.visible = false
+			TEAM.BLUE:
+				visual_indicator.visible = true
+				visual_indicator.set_surface_override_material(0,BLUE_MATERIAL)
+			TEAM.RED:
+				visual_indicator.visible = true
+				visual_indicator.set_surface_override_material(0,RED_MATERIAL)
+			TEAM.GREEN:
+				visual_indicator.visible = true
+				visual_indicator.set_surface_override_material(0,GREEN_MATERIAL)
+		
 var hovering = false
+
+const BLUE_MATERIAL = preload("res://OtherMaterials/blue_material.tres")
+const GREEN_MATERIAL = preload("uid://8vw1icb52lme")
+const RED_MATERIAL = preload("uid://btb30xedw88sj")
+
+
+@onready var visual_indicator: MeshInstance3D = $VisualIndicator
 
 const BREAD_CRUMB = preload("res://3DDraw/bread_crumb.tscn")
 const SHIP_RESOURCE = preload("res://Resources/ship_resource.tscn")
@@ -72,6 +96,9 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("x"):
 		print("Toggle time to ", !$ResourceTimer.paused)
 		$ResourceTimer.paused = !$ResourceTimer.paused
+	if Input.is_action_just_pressed("z") and system_active:
+		team_ownership = (team_ownership+1)%2 #hardcoded possibilities
+		galaxy.set_system_disabled(self, team_ownership != TEAM.NEUTRAL)
 		
 func pick_weighted_startype() -> StarType:
 	var total_weight_sum : float = 0.0
@@ -172,15 +199,20 @@ func generate_resource():
 	return 
 
 func eject_resource(res):
-	if (res.final_destination and res.final_destination != self):
-		var next_destination = galaxy.get_next_step(self, res.final_destination)
-		if next_destination:
-			res.destination = next_destination
-			res.begin_transmission()
-			var global_pos = res.global_position
-			$ShipResourceContainer.remove_child(res)
-			galaxy.add_free_resource(res, global_pos)
-			# print("Ejecting!", res.name)
+	#if (res.final_destination and res.final_destination != self):
+	var next_destination = galaxy.get_next_step(self, res.final_destination)
+	if next_destination:
+		res.destination = next_destination
+		res.begin_transmission()
+		var global_pos = res.global_position
+		$ShipResourceContainer.remove_child(res)
+		galaxy.add_free_resource(res, global_pos)
+	else:
+		res.final_destination = self
+		receive_resource(res)
+		# print("Ejecting!", res.name)
+
+#func decide_resource_next_step(res):
 
 func receive_resource(res):
 	if self != res.final_destination:
@@ -209,3 +241,5 @@ func _on_trail_timer_timeout() -> void:
 func _on_resource_timer_timeout() -> void:
 	generate_resource()
 	
+func toggle_active(val : bool):
+			$VisualIndicator.visible = not $VisualIndicator.visible

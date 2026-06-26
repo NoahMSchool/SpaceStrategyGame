@@ -16,6 +16,7 @@ func end_transmission():
 
 func _process(delta: float) -> void:
 	if destination and in_transmission:
-		global_position = global_position.move_toward(destination.global_position, delta)
-		if global_position == destination.global_position:
-			destination.receive_resource(self)
+		if destination.is_mine():
+			global_position = global_position.move_toward(destination.global_position, delta)
+			if global_position == destination.global_position:
+				destination.receive_resource(self)

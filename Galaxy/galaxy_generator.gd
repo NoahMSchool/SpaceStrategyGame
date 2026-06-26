@@ -104,6 +104,10 @@ func set_up_astar(max_distance):
 					Draw3D.draw_line(sys1.position,sys2.position)
 	print("We have systems ", systems.size())	
 	return new_algo
+
+func set_system_disabled(sys: SolarSystem, disabled: bool = true):
+	algo.set_point_disabled(sys.get_instance_id(), disabled)
+	print("Setting disabled ", disabled, " on system ", sys)
 	
 func get_next_step(from, to):
 	var next = null
@@ -124,8 +128,6 @@ func add_free_resource(resource_node, global_pos):
 	
 func detach_free_resource(resource_node):
 	$FreeShipContiner.remove_child(resource_node)
-	
-
 	
 	
 func _process(delta: float) -> void:
