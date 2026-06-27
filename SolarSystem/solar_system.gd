@@ -207,6 +207,11 @@ func eject_resource(res):
 		var global_pos = res.global_position
 		$ShipResourceContainer.remove_child(res)
 		galaxy.add_free_resource(res, global_pos)
+		
+		var ejection_direction = (next_destination.global_position-self.global_position).normalized()
+		var ejection_point = global_position+ejection_direction*system_action_region_radius
+		res.global_position = ejection_point
+	
 	else:
 		res.final_destination = self
 		receive_resource(res)
@@ -215,13 +220,14 @@ func eject_resource(res):
 #func decide_resource_next_step(res):
 
 func receive_resource(res):
-	if self != res.final_destination:
-		eject_resource(res)
-	else:
-		galaxy.detach_free_resource(res)
-		res.queue_free()
-		generate_resource()
-	# $ShipResourceContainer.add_child(res)
+	if self == res.destination:
+		if self != res.final_destination:
+			eject_resource(res)
+		else:
+			galaxy.detach_free_resource(res)
+			res.queue_free()
+			generate_resource()
+		# $ShipResourceContainer.add_child(res)
 	# res.destination = null
 	#if self == res.destination:
 	# res.end_transmission()
