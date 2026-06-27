@@ -21,19 +21,19 @@ Use GDShader for stars
 
 
 Move Planet stuff out of system generation
-
-
-make top down orthographic view of system
-make map view of system
-move location data into node resources
-
-Change galaxy generation algorithm so that the system count and separation are fixed and galaxy size is not a fixed parameter
-Maybe change planet orbit settings to generic solar system orbit levels.
 Make orbit data be stored by solar system not planet
 
 
-Strategy
+Noah Tasks
 
-Add edges to graph
-Add ownership of nodes
-Add starter node where players ships expand out of 
+Small
+
+Medium
+
+Large
+
+Smooth planet sending
+	Make active system regeon
+	select point on plane tangent to system to be start of journey
+	shoot ray  parralell to direction of centres of system to find the end point
+	give ship velocity or lerp between start and end points.
