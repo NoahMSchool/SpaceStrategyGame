@@ -2,27 +2,23 @@
 
 [ext_resource type="Script" uid="uid://cxt6hjfkvjvpl" path="res://SolarSystem/solar_system.gd" id="1_qll8u"]
 [ext_resource type="Material" uid="uid://bddnby5mfksgp" path="res://Stars/yellowstarshadermat.tres" id="2_q3qrj"]
-[ext_resource type="Material" uid="uid://bkanweaai2shj" path="res://OtherMaterials/blue_material.tres" id="3_8jpt8"]
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_bhdg8"]
+[ext_resource type="Material" uid="uid://8vw1icb52lme" path="res://OtherMaterials/green_material.tres" id="3_8jpt8"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_t4lb4"]
 radial_segments = 32
 rings = 16
-
-[sub_resource type="SphereMesh" id="SphereMesh_wv7y6"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_g36jq"]
 top_radius = 1.0
 bottom_radius = 1.0
 height = 0.5
 
-[node name="SolarSystem" type="Area3D" unique_id=540009203 groups=["Selectable", "Viewable"]]
-script = ExtResource("1_qll8u")
+[sub_resource type="SphereMesh" id="SphereMesh_wv7y6"]
 
-[node name="SelectionSphere" type="CollisionShape3D" parent="." unique_id=927894171]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-shape = SubResource("SphereShape3D_bhdg8")
+[sub_resource type="SphereShape3D" id="SphereShape3D_bhdg8"]
+
+[node name="SolarSystem" type="Node3D" unique_id=1798297231 groups=["Selectable", "Viewable"]]
+script = ExtResource("1_qll8u")
 
 [node name="StarLight" type="OmniLight3D" parent="." unique_id=588988761]
 light_energy = 10.0
@@ -36,11 +32,6 @@ surface_material_override/0 = ExtResource("2_q3qrj")
 
 [node name="ViewPoint" type="Node3D" parent="." unique_id=601354782]
 
-[node name="SelectionMesh" type="MeshInstance3D" parent="." unique_id=1980739757]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-visible = false
-mesh = SubResource("SphereMesh_wv7y6")
-
 [node name="TrailTimer" type="Timer" parent="." unique_id=879202102]
 wait_time = 0.5
 autostart = true
@@ -53,7 +44,7 @@ autostart = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.5, 0)
 
 [node name="ResourceTimer" type="Timer" parent="." unique_id=1254746077]
-wait_time = 2.0
+wait_time = 5.0
 autostart = true
 
 [node name="VisualIndicator" type="MeshInstance3D" parent="." unique_id=702602521]
@@ -62,6 +53,19 @@ visible = false
 mesh = SubResource("CylinderMesh_g36jq")
 surface_material_override/0 = ExtResource("3_8jpt8")
 
-[connection signal="input_event" from="." to="." method="_mouse_selected"]
+[node name="SelectionArea" type="Area3D" parent="." unique_id=1366468216]
+collision_layer = 8
+collision_mask = 0
+
+[node name="SelectionMesh" type="MeshInstance3D" parent="SelectionArea" unique_id=1980739757]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+visible = false
+mesh = SubResource("SphereMesh_wv7y6")
+skeleton = NodePath("../..")
+
+[node name="SelectionSphere" type="CollisionShape3D" parent="SelectionArea" unique_id=927894171]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+shape = SubResource("SphereShape3D_bhdg8")
+
 [connection signal="timeout" from="TrailTimer" to="." method="_on_trail_timer_timeout"]
 [connection signal="timeout" from="ResourceTimer" to="." method="_on_resource_timer_timeout"]

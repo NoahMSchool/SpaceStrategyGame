@@ -15,7 +15,6 @@ func _ready() -> void:
 	global_position = Vector3(0,15,0)
 	rotation.x = -90
 
-
 func _process(delta: float) -> void:
 	#Orbiting
 	var mouse_pos = get_viewport().get_mouse_position()

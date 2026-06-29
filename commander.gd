@@ -50,6 +50,8 @@ func _process(delta: float) -> void:
 			rotation.y -= delta_mouse.x*orbit_sens
 			rotation.x -= delta_mouse.y*orbit_sens
 			rotation.x = clamp(rotation.x, -3*PI/4, 3*PI/8)
+	
+	
 
 func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("s"):
@@ -57,8 +59,15 @@ func _unhandled_input(event: InputEvent) -> void:
 			birdseyecommander = false
 		else:
 			birdseyecommander = true
-
-		
+	
+	if Input.is_action_just_pressed("LeftMouse"):
+		var ray_collision = get_shoot_ray_intersection()
+		if ray_collision:
+			var collider = ray_collision["collider"]
+			var collider_system = collider.get_parent()
+			move_system(collider_system)
+			print(collider_system)
+			
 func move_system(system_node : Node3D):
 	print("from : ", current_system)
 	print("to : ", system_node)
@@ -80,6 +89,19 @@ func to_current_system_viewpoint():
 
 func select_system(system : Node3D):
 	move_system(system)
+
+func get_shoot_ray_intersection():
+	var mouse_pos = get_viewport().get_mouse_position()
+	var ray_length = 1000
+	var from = cam.project_ray_origin(mouse_pos)
+	var to = from + cam.project_ray_normal(mouse_pos)*ray_length
+	var space = get_world_3d().direct_space_state
+	var ray_query = PhysicsRayQueryParameters3D.new()
+	ray_query.collide_with_areas = true
+	ray_query.from = from
+	ray_query.to = to
+	var raycast_result = space.intersect_ray(ray_query)
+	return raycast_result
 	
 
 func update_commander_cam():

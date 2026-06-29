@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cmgn8en274asy"]
 
 [ext_resource type="Script" uid="uid://5rn5nd5weo2e" path="res://Galaxy/galaxy_generator.gd" id="1_dkrcd"]
-[ext_resource type="Script" uid="uid://dvl4fbny6m7dd" path="res://explorercommander.gd" id="2_kf2id"]
+[ext_resource type="Script" uid="uid://dvl4fbny6m7dd" path="res://commander.gd" id="2_kf2id"]
 
 [sub_resource type="Environment" id="Environment_7c7pm"]
 background_mode = 1
@@ -10,7 +10,6 @@ fog_density = 0.0
 
 [node name="Galaxy" type="Node3D" unique_id=1524020374]
 script = ExtResource("1_dkrcd")
-max_system_count = 30
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1426894719]
 environment = SubResource("Environment_7c7pm")

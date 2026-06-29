@@ -33,6 +33,8 @@ const SHIP_RESOURCE = preload("res://Resources/ship_resource.tscn")
 var system_data : SolarSystemData
 var planet_orbit_direction = 1
 
+var system_action_region_radius : float
+
 var system_active = false: 
 	set(value):
 		system_active = value
@@ -71,18 +73,19 @@ func update_system_activation():
 	if system_active:
 		$PlanetContainer.visible = true
 		$TrailContainer.visible = true
-		$SelectionSphere.disabled = true
+		$SelectionArea/SelectionSphere.disabled = true
 		$SunMesh.scale = Vector3.ONE * system_data.star_type.star_size
 	else: 
 		$PlanetContainer.visible = false
 		$TrailContainer.visible = false
-		$SelectionSphere.disabled = false
+		$SelectionArea/SelectionSphere.disabled = false
 		$SunMesh.scale = Vector3.ONE * system_data.star_type.observer_star_size
 		
 func _mouse_selected(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
-	hovering = true
-	if Input.is_action_just_pressed("LeftMouse"):
+	#hovering = true
+	#if Input.is_action_just_pressed("LeftMouse"):
 		selected.emit(self)
+		print("selected")
 		
 func _input(event: InputEvent) -> void:
 	if system_active && Input.is_action_just_pressed("r"):
@@ -145,6 +148,7 @@ func generate_system():
 		#$PlanetContainer.add_child(planet_ellipse)
 		$PlanetContainer.add_child(new_planet)
 		new_planet.update_planet()
+		system_action_region_radius = orbit_radius
 
 
 
@@ -183,9 +187,8 @@ print("before")
 p.trail.mesh.curve.add_point(p.position)
 		
 """
-	
-			
-			
+
+
 
 func generate_resource():
 	var per_row = 10
@@ -195,12 +198,12 @@ func generate_resource():
 	var y_off = ($ShipResourceContainer.get_child_count() - 1) % per_row
 	new_resource.position = new_resource.position + Vector3(0.125,0,0)* x_off + Vector3(0, 0, 0.3) * y_off
 	new_resource.final_destination = galaxy.get_target_system()
-	
+	eject_resource(new_resource)
 	return 
 
 func eject_resource(res):
 	#if (res.final_destination and res.final_destination != self):
-	var next_destination = galaxy.get_next_step(self, res.final_destination)
+	var next_destination : SolarSystem = galaxy.get_next_step(self, res.final_destination)
 	if next_destination:
 		res.destination = next_destination
 		res.begin_transmission()
@@ -211,13 +214,30 @@ func eject_resource(res):
 		var ejection_direction = (next_destination.global_position-self.global_position).normalized()
 		var ejection_point = global_position+ejection_direction*system_action_region_radius
 		res.global_position = ejection_point
-	
+		
+		var recieve_point = next_destination.get_resourse_recieve_point(ejection_direction)
+		#var ray_length = self.global_position.distance_to(next_destination)
+		#var from = ejection_point
+		#var to = ejection_point+ejection_direction*ray_length
+		#var space = get_world_3d().direct_space_state
+		#var ray_query = PhysicsRayQueryParameters3D.new()
+		#ray_query.collide_with_areas = true
+		#ray_query.from = from
+		#ray_query.to = to
+		#var raycast_result = space.intersect_ray(ray_query)
 	else:
 		res.final_destination = self
 		receive_resource(res)
 		# print("Ejecting!", res.name)
-
+	
 #func decide_resource_next_step(res):
+
+func get_resourse_recieve_point(direction : Vector3):
+	if not direction.is_normalized():
+		direction = direction.normalized()
+	var recieve_point = global_position + -direction*system_action_region_radius
+	return recieve_point
+	
 
 func receive_resource(res):
 	if self == res.destination:
@@ -248,4 +268,4 @@ func _on_resource_timer_timeout() -> void:
 	generate_resource()
 	
 func toggle_active(val : bool):
-			$VisualIndicator.visible = not $VisualIndicator.visible
+	$VisualIndicator.visible = not $VisualIndicator.visible
