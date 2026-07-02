@@ -33,8 +33,8 @@ func end_transmission():
 	in_transmission = false
 	target_reached.emit()
 	print("finished sending")
-	if destination_system:
-		destination_system.process_resource(self)
+	#if destination_system:
+	#	destination_system.process_resource(self)
 		
 func _process(delta: float) -> void:
 	if in_transmission:

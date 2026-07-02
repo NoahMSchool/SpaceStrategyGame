@@ -213,10 +213,13 @@ func process_resource(res):
 			res.send_to_position(ejection_point)
 			await res.target_reached
 			#print(res.destination_system)
-			res.destination_system = next_destination
-			#res.destination_relative = next_destination.get_resourse_ejection_point()
+			#res.destination_system = next_destination
+			var destination_relative = next_destination.get_resourse_recieve_point(ejection_direction)
 			
-			send_resource(res, next_destination)
+			res.send_to_position(next_destination.global_position+destination_relative)
+			await res.target_reached
+			next_destination.process_resource(res)
+
 			#print(next_destination.global_position)
 		else:
 			print("dead end")
