@@ -92,9 +92,9 @@ func _input(event: InputEvent) -> void:
 		print("Generating Resource")
 		generate_resource()
 
-	if Input.is_action_just_pressed("m"):
-		for r in $ShipResourceContainer.get_children():
-			eject_resource(r)
+	#if Input.is_action_just_pressed("m"):
+		#for r in $ShipResourceContainer.get_children():
+			#eject_resource(r)
 			
 	if Input.is_action_just_pressed("x"):
 		print("Toggle time to ", !$ResourceTimer.paused)
@@ -188,8 +188,6 @@ p.trail.mesh.curve.add_point(p.position)
 		
 """
 
-
-
 func generate_resource():
 	var per_row = 10
 	var new_resource = SHIP_RESOURCE.instantiate()
@@ -197,11 +195,42 @@ func generate_resource():
 	var x_off = ($ShipResourceContainer.get_child_count() - 1) / per_row
 	var y_off = ($ShipResourceContainer.get_child_count() - 1) % per_row
 	new_resource.position = new_resource.position + Vector3(0.125,0,0)* x_off + Vector3(0, 0, 0.3) * y_off
-	new_resource.final_destination = galaxy.get_target_system()
-	eject_resource(new_resource)
+	new_resource.final_destination_system = galaxy.get_target_system()
+	detatch_resourse(new_resource)
+	process_resource(new_resource)
 	return 
 
-func eject_resource(res):
+func process_resource(res):
+	print("recieving and processing at ", self, global_position)#if self == res.destination_system:
+
+	if self != res.final_destination_system:
+		var next_destination : SolarSystem = galaxy.get_next_step(self, res.final_destination_system)
+		if next_destination:
+			print("start processing")
+			var ejection_direction = (next_destination.global_position-self.global_position).normalized()
+			var ejection_point = global_position+ejection_direction*system_action_region_radius
+			print("sending to ejection point")
+			res.send_to_position(ejection_point)
+			await res.target_reached
+			#print(res.destination_system)
+			res.destination_system = next_destination
+			#res.destination_relative = next_destination.get_resourse_ejection_point()
+			
+			send_resource(res, next_destination)
+			#print(next_destination.global_position)
+		else:
+			print("dead end")
+	else:
+		add_resourse(res)
+		print("at final")
+
+func send_resource(res, next_system):
+	print("sending resourse to ", next_system)
+	res.send_to_destination_system(next_system)
+	print("sending to ", next_system)
+#func eject_resourse():
+	
+func edject_resource(res):
 	#if (res.final_destination and res.final_destination != self):
 	var next_destination : SolarSystem = galaxy.get_next_step(self, res.final_destination)
 	if next_destination:
@@ -232,27 +261,40 @@ func eject_resource(res):
 	
 #func decide_resource_next_step(res):
 
-func get_resourse_recieve_point(direction : Vector3):
+func get_resourse_recieve_point(direction : Vector3):#gives relative position
 	if not direction.is_normalized():
 		direction = direction.normalized()
-	var recieve_point = global_position + -direction*system_action_region_radius
+	var recieve_point = -direction*system_action_region_radius
 	return recieve_point
-	
+
+func get_resourse_ejection_point(direction : Vector3):#called by this system
+	pass
 
 func receive_resource(res):
-	if self == res.destination:
-		if self != res.final_destination:
-			eject_resource(res)
+		print("recieving at ", self, global_position)#if self == res.destination_system:
+		res.destination_system = null
+		process_resource(res)
+		return
+		if self != res.final_destination_system:
+			pass
 		else:
 			galaxy.detach_free_resource(res)
 			res.queue_free()
 			generate_resource()
-		# $ShipResourceContainer.add_child(res)
-	# res.destination = null
+			$ShipResourceContainer.add_child(res)
 	#if self == res.destination:
 	# res.end_transmission()
 	# res.position = res.position + Vector3(0,0.125,0)* $ShipResourceContainer.get_child_count()
 	
+func add_resourse(res):
+	galaxy.detach_free_resource(res)
+	res.queue_free()
+	#generate_resource()
+	$ShipResourceContainer.add_child(res)
+func detatch_resourse(res):
+	var global_pos = res.global_position
+	$ShipResourceContainer.remove_child(res)
+	galaxy.add_free_resource(res, global_pos)
 	
 func _on_trail_timer_timeout() -> void:
 	if not system_active:

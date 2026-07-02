@@ -10,6 +10,8 @@ fog_density = 0.0
 
 [node name="Galaxy" type="Node3D" unique_id=1524020374]
 script = ExtResource("1_dkrcd")
+min_system_separation = 10.0
+max_system_count = 15
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1426894719]
 environment = SubResource("Environment_7c7pm")
