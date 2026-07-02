@@ -231,23 +231,7 @@ func send_resource(res, next_system):
 	print("sending resourse to ", next_system)
 	res.send_to_destination_system(next_system)
 	print("sending to ", next_system)
-#func eject_resourse():
 	
-func edject_resource(res):
-	#if (res.final_destination and res.final_destination != self):
-	var next_destination : SolarSystem = galaxy.get_next_step(self, res.final_destination)
-	if next_destination:
-		res.destination = next_destination
-		res.begin_transmission()
-		var global_pos = res.global_position
-		$ShipResourceContainer.remove_child(res)
-		galaxy.add_free_resource(res, global_pos)
-		
-		var ejection_direction = (next_destination.global_position-self.global_position).normalized()
-		var ejection_point = global_position+ejection_direction*system_action_region_radius
-		res.global_position = ejection_point
-		
-		var recieve_point = next_destination.get_resourse_recieve_point(ejection_direction)
 		#var ray_length = self.global_position.distance_to(next_destination)
 		#var from = ejection_point
 		#var to = ejection_point+ejection_direction*ray_length
@@ -257,37 +241,12 @@ func edject_resource(res):
 		#ray_query.from = from
 		#ray_query.to = to
 		#var raycast_result = space.intersect_ray(ray_query)
-	else:
-		res.final_destination = self
-		receive_resource(res)
-		# print("Ejecting!", res.name)
-	
-#func decide_resource_next_step(res):
 
 func get_resourse_recieve_point(direction : Vector3):#gives relative position
 	if not direction.is_normalized():
 		direction = direction.normalized()
 	var recieve_point = -direction*system_action_region_radius
 	return recieve_point
-
-func get_resourse_ejection_point(direction : Vector3):#called by this system
-	pass
-
-func receive_resource(res):
-		print("recieving at ", self, global_position)#if self == res.destination_system:
-		res.destination_system = null
-		process_resource(res)
-		return
-		if self != res.final_destination_system:
-			pass
-		else:
-			galaxy.detach_free_resource(res)
-			res.queue_free()
-			generate_resource()
-			$ShipResourceContainer.add_child(res)
-	#if self == res.destination:
-	# res.end_transmission()
-	# res.position = res.position + Vector3(0,0.125,0)* $ShipResourceContainer.get_child_count()
 	
 func add_resourse(res):
 	galaxy.detach_free_resource(res)
