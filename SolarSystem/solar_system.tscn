@@ -17,6 +17,17 @@ height = 0.5
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_bhdg8"]
 
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_witln"]
+radius = 0.1
+height = 2.5
+radial_segments = 8
+rings = 6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8jpt8"]
+emission_enabled = true
+emission = Color(0.44064042, 0.7768521, 0.46904135, 1)
+emission_energy_multiplier = 5.08
+
 [node name="SolarSystem" type="Node3D" unique_id=1798297231 groups=["Selectable", "Viewable"]]
 script = ExtResource("1_qll8u")
 
@@ -41,7 +52,6 @@ autostart = true
 [node name="TrailContainer" type="Node3D" parent="." unique_id=518089550]
 
 [node name="ShipResourceContainer" type="Node3D" parent="." unique_id=2060881521]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.5, 0)
 
 [node name="ResourceTimer" type="Timer" parent="." unique_id=1254746077]
 wait_time = 5.0
@@ -65,6 +75,11 @@ skeleton = NodePath("../..")
 [node name="SelectionSphere" type="CollisionShape3D" parent="SelectionArea" unique_id=927894171]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 shape = SubResource("SphereShape3D_bhdg8")
+
+[node name="CentreMarker" type="MeshInstance3D" parent="." unique_id=928625001]
+visible = false
+mesh = SubResource("CapsuleMesh_witln")
+surface_material_override/0 = SubResource("StandardMaterial3D_8jpt8")
 
 [connection signal="timeout" from="TrailTimer" to="." method="_on_trail_timer_timeout"]
 [connection signal="timeout" from="ResourceTimer" to="." method="_on_resource_timer_timeout"]

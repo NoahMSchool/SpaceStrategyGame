@@ -4,11 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dxvmhwsneqv0c"
-valid=false
+path="res://.godot/imported/SpaceStrategyAssets.blend-ae44f7e83755a586935234cd4cb8df8d.scn"
 
 [deps]
 
 source_file="res://SpaceStrategyAssets.blend"
+dest_files=["res://.godot/imported/SpaceStrategyAssets.blend-ae44f7e83755a586935234cd4cb8df8d.scn"]
 
 [params]
 

@@ -31,7 +31,7 @@ const BREAD_CRUMB = preload("res://3DDraw/bread_crumb.tscn")
 const SHIP_RESOURCE = preload("res://Resources/ship_resource.tscn")
 
 var system_data : SolarSystemData
-var planet_orbit_direction = 1
+var orbit_direction = 1
 
 var system_action_region_radius : float
 
@@ -57,6 +57,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if system_active:
 		orbit_planets(delta)
+	orbit_resources(delta)
 	
 	if hovering:
 		#$SelectionMesh.visible = true
@@ -92,9 +93,9 @@ func _input(event: InputEvent) -> void:
 		print("Generating Resource")
 		generate_resource()
 
-	#if Input.is_action_just_pressed("m"):
-		#for r in $ShipResourceContainer.get_children():
-			#eject_resource(r)
+	if Input.is_action_just_pressed("m"):
+		for r in $ShipResourceContainer.get_children():
+			eject_resource(r)
 			
 	if Input.is_action_just_pressed("x"):
 		print("Toggle time to ", !$ResourceTimer.paused)
@@ -120,7 +121,7 @@ func generate_system():
 	$SunMesh.material_override = system_data.star_type.star_mat
 	$StarLight.light_color = system_data.star_type.star_mat.get_shader_parameter("star_color")
 	$SunMesh.scale = Vector3.ONE*system_data.star_type.star_size
-	planet_orbit_direction = [-1,1].pick_random()
+	orbit_direction = [-1,1].pick_random()
 	var planet_count = randi_range(system_data.star_type.planet_range[0],system_data.star_type.planet_range[1])
 	#print(planet_count)
 	var orbit_radius : float = system_data.star_type.star_size
@@ -155,13 +156,25 @@ func generate_system():
 #use ecentricity to make eliptical orbits
 func orbit_planets(delta):
 	for p in self.planets:
-		p.planet_data.orbit_angle = p.planet_data.orbit_angle + p.planet_data.angular_velocity*delta*planet_orbit_direction
+		p.planet_data.orbit_angle = p.planet_data.orbit_angle + p.planet_data.angular_velocity*delta*orbit_direction
 		var current_orbit = p.planet_data.orbit_angle
 	
 		p.position = p.planet_data.orbit_basis*Vector3(p.planet_data.major_orbit_radius*cos(current_orbit), 0, p.planet_data.minor_orbit_radius*sin(current_orbit))
 
-func orbit_resources():
-	pass
+var resource_orbit_rotation = 0
+var resource_orbit_radius = 2
+
+func orbit_resources(delta):
+	resource_orbit_rotation+= delta/2
+	var orbit_count = $ShipResourceContainer.get_child_count()
+	var orbit_difference = 2*PI/orbit_count
+	var resource_orbit_radius = system_action_region_radius
+
+	for i in range(orbit_count):
+		var orbit_angle = i*orbit_difference + resource_orbit_rotation*orbit_direction
+		$ShipResourceContainer.get_child(i).position = Vector3(resource_orbit_radius*cos(orbit_angle),0,resource_orbit_radius*sin(orbit_angle))
+		
+	
 
 """
 For Star
@@ -196,10 +209,7 @@ func generate_resource():
 	var y_off = ($ShipResourceContainer.get_child_count() - 1) % per_row
 	new_resource.position = new_resource.position + Vector3(0.125,0,0)* x_off + Vector3(0, 0, 0.3) * y_off
 	new_resource.final_destination_system = galaxy.get_target_system()
-	detatch_resourse(new_resource)
-	process_resource(new_resource)
-	return 
-
+	
 func process_resource(res):
 	print("recieving and processing at ", self, global_position)#if self == res.destination_system:
 
@@ -242,6 +252,11 @@ func send_resource(res, next_system):
 		#ray_query.to = to
 		#var raycast_result = space.intersect_ray(ray_query)
 
+func eject_resource(res):
+	detatch_resourse(res)
+	process_resource(res)
+	
+
 func get_resourse_recieve_point(direction : Vector3):#gives relative position
 	if not direction.is_normalized():
 		direction = direction.normalized()
@@ -250,7 +265,7 @@ func get_resourse_recieve_point(direction : Vector3):#gives relative position
 	
 func add_resourse(res):
 	galaxy.detach_free_resource(res)
-	res.queue_free()
+	#res.queue_free()
 	#generate_resource()
 	$ShipResourceContainer.add_child(res)
 func detatch_resourse(res):
