@@ -122,9 +122,10 @@ func get_target_system():
 		return systems[0]
 	return null
 
-func add_free_resource(resource_node, global_pos):
+func add_free_resource(resource_node, global_pos = null):
 	$FreeShipContiner.add_child(resource_node)
-	resource_node.global_position = global_pos
+	if global_pos:
+		resource_node.global_position = global_pos
 	
 func detach_free_resource(resource_node):
 	$FreeShipContiner.remove_child(resource_node)

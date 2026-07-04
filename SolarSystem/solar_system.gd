@@ -53,7 +53,6 @@ func _ready() -> void:
 
 	system_active = false
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if system_active:
 		orbit_planets(delta)
@@ -149,7 +148,8 @@ func generate_system():
 		#$PlanetContainer.add_child(planet_ellipse)
 		$PlanetContainer.add_child(new_planet)
 		new_planet.update_planet()
-		system_action_region_radius = orbit_radius
+	system_action_region_radius = orbit_radius
+	resource_orbit_radius = system_action_region_radius/2
 
 
 
@@ -159,21 +159,39 @@ func orbit_planets(delta):
 		p.planet_data.orbit_angle = p.planet_data.orbit_angle + p.planet_data.angular_velocity*delta*orbit_direction
 		var current_orbit = p.planet_data.orbit_angle
 	
-		p.position = p.planet_data.orbit_basis*Vector3(p.planet_data.major_orbit_radius*cos(current_orbit), 0, p.planet_data.minor_orbit_radius*sin(current_orbit))
+		p.position = p.planet_data.orbit_basis*Vector3(p.planet_data.major_orbit_radius*cos(current_orbit), 0.25, p.planet_data.minor_orbit_radius*sin(current_orbit))#placed slightly above planets on y axis
 
 var resource_orbit_rotation = 0
-var resource_orbit_radius = 2
+var resource_orbit_radius = 1 #overriden to be relative to system radius in generate_system, may vary if orbit levels are added
+var resource_orbit_positions : Array[Vector3] = []
+var resource_orbit_items = []
+var orbit_angular_separation = 0
+var orbit_count = 0
+var orbit_anglular_separation = 0
 
+func add_resource_to_system_orbit(res):
+	#removing from galaxy and adding to system
+	galaxy.detach_free_resource(res)
+	$ShipResourceContainer.add_child(res)
+	recalculate_orbits()
+	
+func detatch_resourse_from_system_orbit(res):
+	var global_pos = res.global_position
+	$ShipResourceContainer.remove_child(res)
+	galaxy.add_free_resource(res, global_pos)
+	recalculate_orbits()
+
+func recalculate_orbits():
+	orbit_count = $ShipResourceContainer.get_child_count()
+	orbit_anglular_separation = 2*PI/orbit_count
+	resource_orbit_positions = []
+	
 func orbit_resources(delta):
 	resource_orbit_rotation+= delta/2
-	var orbit_count = $ShipResourceContainer.get_child_count()
-	var orbit_difference = 2*PI/orbit_count
-	var resource_orbit_radius = system_action_region_radius
-
 	for i in range(orbit_count):
-		var orbit_angle = i*orbit_difference + resource_orbit_rotation*orbit_direction
+		var orbit_angle = i*orbit_anglular_separation + resource_orbit_rotation*orbit_direction
 		$ShipResourceContainer.get_child(i).position = Vector3(resource_orbit_radius*cos(orbit_angle),0,resource_orbit_radius*sin(orbit_angle))
-		
+
 	
 
 """
@@ -202,12 +220,8 @@ p.trail.mesh.curve.add_point(p.position)
 """
 
 func generate_resource():
-	var per_row = 10
 	var new_resource = SHIP_RESOURCE.instantiate()
-	$ShipResourceContainer.add_child(new_resource)
-	var x_off = ($ShipResourceContainer.get_child_count() - 1) / per_row
-	var y_off = ($ShipResourceContainer.get_child_count() - 1) % per_row
-	new_resource.position = new_resource.position + Vector3(0.125,0,0)* x_off + Vector3(0, 0, 0.3) * y_off
+	add_resource_to_system_orbit(new_resource)
 	new_resource.final_destination_system = galaxy.get_target_system()
 	
 func process_resource(res):
@@ -234,7 +248,7 @@ func process_resource(res):
 		else:
 			print("dead end")
 	else:
-		add_resourse(res)
+		add_resource_to_system_orbit(res)
 		print("at final")
 
 func send_resource(res, next_system):
@@ -253,7 +267,7 @@ func send_resource(res, next_system):
 		#var raycast_result = space.intersect_ray(ray_query)
 
 func eject_resource(res):
-	detatch_resourse(res)
+	detatch_resourse_from_system_orbit(res)
 	process_resource(res)
 	
 
@@ -263,15 +277,7 @@ func get_resourse_recieve_point(direction : Vector3):#gives relative position
 	var recieve_point = -direction*system_action_region_radius
 	return recieve_point
 	
-func add_resourse(res):
-	galaxy.detach_free_resource(res)
-	#res.queue_free()
-	#generate_resource()
-	$ShipResourceContainer.add_child(res)
-func detatch_resourse(res):
-	var global_pos = res.global_position
-	$ShipResourceContainer.remove_child(res)
-	galaxy.add_free_resource(res, global_pos)
+
 	
 func _on_trail_timer_timeout() -> void:
 	if not system_active:
