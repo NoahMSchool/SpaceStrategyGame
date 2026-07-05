@@ -2,16 +2,21 @@
 
 [ext_resource type="Script" uid="uid://5rn5nd5weo2e" path="res://Galaxy/galaxy_generator.gd" id="1_dkrcd"]
 [ext_resource type="Script" uid="uid://dvl4fbny6m7dd" path="res://commander.gd" id="2_kf2id"]
+[ext_resource type="Material" uid="uid://8vw1icb52lme" path="res://OtherMaterials/green_material.tres" id="3_dgjki"]
 
 [sub_resource type="Environment" id="Environment_7c7pm"]
 background_mode = 1
 fog_light_energy = 0.0
 fog_density = 0.0
 
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_7ustf"]
+radius = 0.1
+height = 2.5
+radial_segments = 8
+rings = 6
+
 [node name="Galaxy" type="Node3D" unique_id=1524020374]
 script = ExtResource("1_dkrcd")
-min_system_separation = 10.0
-max_system_count = 15
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1426894719]
 environment = SubResource("Environment_7c7pm")
@@ -30,3 +35,18 @@ script = ExtResource("2_kf2id")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1249539845]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
 sky_mode = 1
+
+[node name="TargetIndicator" type="Node3D" parent="." unique_id=295423795]
+visible = false
+
+[node name="CentreMarker" type="MeshInstance3D" parent="TargetIndicator" unique_id=1292343509]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_7ustf")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("3_dgjki")
+
+[node name="CentreMarker2" type="MeshInstance3D" parent="TargetIndicator" unique_id=204858155]
+transform = Transform3D(-4.371139e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, -4.371139e-08, 1.9106855e-15, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_7ustf")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("3_dgjki")

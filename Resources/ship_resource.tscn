@@ -113,7 +113,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0014332533)
 visible = false
 mesh = SubResource("BoxMesh_oex7v")
 
-[node name="TransportShip" type="MeshInstance3D" parent="." unique_id=1690466795]
+[node name="TransportShip" type="Node3D" parent="." unique_id=156552536]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+top_level = true
+
+[node name="ShipMesh" type="MeshInstance3D" parent="TransportShip" unique_id=1690466795]
 mesh = SubResource("ArrayMesh_58m3d")
 skeleton = NodePath("")

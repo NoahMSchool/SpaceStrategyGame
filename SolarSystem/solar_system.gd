@@ -1,5 +1,6 @@
 extends Node3D
 class_name SolarSystem
+
 enum TEAM {NEUTRAL, RED, BLUE, GREEN}
 
 var team_ownership = TEAM.NEUTRAL:
@@ -18,12 +19,18 @@ var team_ownership = TEAM.NEUTRAL:
 				visual_indicator.visible = true
 				visual_indicator.set_surface_override_material(0,GREEN_MATERIAL)
 		
-var hovering = false
 
 const BLUE_MATERIAL = preload("res://OtherMaterials/blue_material.tres")
 const GREEN_MATERIAL = preload("uid://8vw1icb52lme")
 const RED_MATERIAL = preload("uid://btb30xedw88sj")
 
+var hovering = false
+
+var path_globally_blocked = false: #Remove lateer for testing
+	set(value):
+		path_globally_blocked = value
+		$DisabledIndicator.visible = path_globally_blocked
+		galaxy.set_system_disabled(self, path_globally_blocked)
 
 @onready var visual_indicator: MeshInstance3D = $VisualIndicator
 
@@ -87,23 +94,30 @@ func _mouse_selected(camera: Node, event: InputEvent, event_position: Vector3, n
 	#if Input.is_action_just_pressed("LeftMouse"):
 		selected.emit(self)
 		print("selected")
-		
+
+
 func _input(event: InputEvent) -> void:
 	if system_active && Input.is_action_just_pressed("r"):
 		print("Generating Resource")
 		generate_resource()
-
+		
 	if Input.is_action_just_pressed("m"):
 		for r in $ShipResourceContainer.get_children():
 			eject_resource(r)
 			
-	if Input.is_action_just_pressed("x"):
-		print("Toggle time to ", !$ResourceTimer.paused)
+	if Input.is_action_just_pressed("a"):
+		print("Toggle auto time to ", !$ResourceTimer.paused)
 		$ResourceTimer.paused = !$ResourceTimer.paused
-	if Input.is_action_just_pressed("z") and system_active:
-		team_ownership = (team_ownership+1)%2 #hardcoded possibilities
-		galaxy.set_system_disabled(self, team_ownership != TEAM.NEUTRAL)
 		
+	if Input.is_action_just_pressed("z") and system_active:
+		team_ownership = (team_ownership+1)%4 #hardcoded possibilities
+		
+	if Input.is_action_just_pressed("x") and system_active:
+		path_globally_blocked = not path_globally_blocked
+		
+	if Input.is_action_just_pressed("t") and system_active:
+		galaxy.target_system = self
+			
 func pick_weighted_startype() -> StarType:
 	var total_weight_sum : float = 0.0
 	for st in SpaceInfo.startypes:
@@ -152,25 +166,29 @@ func generate_system():
 	system_action_region_radius = orbit_radius
 	resource_orbit_radius = system_action_region_radius#/2
 	resource_orbit_period = unit_orbit_time*pow(resource_orbit_radius, 1.5)#+ randf()*10 #random deviation #keplers 3rd law
+	resource_orbit_angular_velocity = 2*PI/resource_orbit_period
+
 
 
 
 #use ecentricity to make eliptical orbits
 func orbit_planets(delta):
 	for p in self.planets:
-		p.planet_data.orbit_angle = p.planet_data.orbit_angle + p.planet_data.angular_velocity*delta*orbit_direction
+		p.planet_data.orbit_angle += p.planet_data.angular_velocity*delta*orbit_direction
 		var current_orbit = p.planet_data.orbit_angle
 	
 		p.position = p.planet_data.orbit_basis*Vector3(p.planet_data.major_orbit_radius*cos(current_orbit), 0.25, p.planet_data.minor_orbit_radius*sin(current_orbit))#placed slightly above planets on y axis
 
 var resource_orbit_rotation = 0
 var resource_orbit_radius = 1 #overriden to be relative to system radius in generate_system, may vary if orbit levels are added
-var resource_orbit_period = unit_orbit_time #also overriden
+var resource_orbit_period = unit_orbit_time #also overridden
+var resource_orbit_angular_velocity = 1 #also overridden
 var resource_orbit_positions : Array[Vector3] = []
 var resource_orbit_items : Array[ShipResource] = []
 var orbit_angular_separation = 0
 var orbit_count = 0
 var orbit_anglular_separation = 0
+
 func add_resource_to_system_orbit(res):
 	#removing from galaxy and adding to system
 	galaxy.detach_free_resource(res)
@@ -186,12 +204,11 @@ func detatch_resourse_from_system_orbit(res):
 func recalculate_orbits():
 	orbit_count = $ShipResourceContainer.get_child_count()
 	orbit_anglular_separation = 2*PI/orbit_count
-	resource_orbit_positions = []
 	
 func orbit_resources(delta):
-	resource_orbit_rotation+= delta/2
+	resource_orbit_rotation+= delta#*orbit_directionresource_orbit_angular_velocity
 	for i in range(orbit_count):
-		var orbit_angle = i*orbit_anglular_separation + resource_orbit_rotation*orbit_direction
+		var orbit_angle = i*orbit_anglular_separation + resource_orbit_rotation
 		$ShipResourceContainer.get_child(i).position = Vector3(resource_orbit_radius*cos(orbit_angle),0.25,resource_orbit_radius*sin(orbit_angle))#y increased so orbit above ships
 
 	
@@ -224,7 +241,7 @@ p.trail.mesh.curve.add_point(p.position)
 func generate_resource():
 	var new_resource = SHIP_RESOURCE.instantiate()
 	add_resource_to_system_orbit(new_resource)
-	new_resource.final_destination_system = galaxy.get_target_system()
+	new_resource.final_destination_system = galaxy.target_system
 	
 func process_resource(res):
 	print("recieving and processing at ", self, global_position)#if self == res.destination_system:

@@ -12,11 +12,15 @@ const SYSTEM = preload("res://SolarSystem/solar_system.tscn")
 		max_connection_distance = val
 		algo = set_up_astar(max_connection_distance)
 
-		
-	
-
 #const galaxy_radius = 100
 @export var disc_height = 10
+
+var target_system : SolarSystem = null:
+	set(value):
+		target_system = value
+		if target_system:
+			$TargetIndicator.position = target_system.position
+			$TargetIndicator.visible = true
 
 var systems : Array[SolarSystem] = []
 var root_system : SolarSystem
@@ -79,6 +83,9 @@ func _ready() -> void:
 		new_system.name = "System" + str(i)
 		systems.append(new_system)
 		
+	if systems.size()>0:
+		target_system = systems[0]
+	
 	algo = set_up_astar(max_connection_distance)
 	
 		
@@ -117,10 +124,6 @@ func get_next_step(from, to):
 			next = instance_from_id(path[1])
 	return next
 
-func get_target_system():
-	if (systems.size() > 0):
-		return systems[0]
-	return null
 
 func add_free_resource(resource_node, global_pos = null):
 	$FreeShipContiner.add_child(resource_node)

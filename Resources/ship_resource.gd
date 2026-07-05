@@ -13,7 +13,10 @@ var pos_last_frame:= Vector3(0,0,0)
 var target_position : Vector3
 var in_transmission:= false
 signal target_reached
-		
+func _ready() -> void:
+	$TransportShip.global_position = global_position
+
+
 func send_to_position(pos):
 	target_position = pos
 	print("sending to ", target_position)
@@ -35,3 +38,8 @@ func _process(delta: float) -> void:
 		global_position = global_position.move_toward(target_position, delta*ship_transmission_speed)
 		if global_position == target_position and pos_last_frame != target_position:
 			end_transmission()
+	if lock_ship_pos_to_target:
+		$TransportShip.global_position = global_position
+	else:
+		$TransportShip.look_at(global_position)
+		$TransportShip.global_position = $TransportShip.global_position.move_toward(global_position, ship_max_speed*delta)

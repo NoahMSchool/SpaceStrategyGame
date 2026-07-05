@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cxt6hjfkvjvpl" path="res://SolarSystem/solar_system.gd" id="1_qll8u"]
 [ext_resource type="Material" uid="uid://bddnby5mfksgp" path="res://Stars/yellowstarshadermat.tres" id="2_q3qrj"]
 [ext_resource type="Material" uid="uid://8vw1icb52lme" path="res://OtherMaterials/green_material.tres" id="3_8jpt8"]
+[ext_resource type="Material" uid="uid://btb30xedw88sj" path="res://OtherMaterials/red_material.tres" id="4_y83ar"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_t4lb4"]
 radial_segments = 32
@@ -17,16 +18,9 @@ height = 0.5
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_bhdg8"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_witln"]
-radius = 0.1
-height = 2.5
-radial_segments = 8
-rings = 6
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8jpt8"]
-emission_enabled = true
-emission = Color(0.44064042, 0.7768521, 0.46904135, 1)
-emission_energy_multiplier = 5.08
+[sub_resource type="TorusMesh" id="TorusMesh_witln"]
+inner_radius = 1.0
+outer_radius = 1.5
 
 [node name="SolarSystem" type="Node3D" unique_id=1798297231 groups=["Selectable", "Viewable"]]
 script = ExtResource("1_qll8u")
@@ -76,10 +70,12 @@ skeleton = NodePath("../..")
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 shape = SubResource("SphereShape3D_bhdg8")
 
-[node name="CentreMarker" type="MeshInstance3D" parent="." unique_id=928625001]
+[node name="DisabledIndicator" type="MeshInstance3D" parent="." unique_id=826871171]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0014550686, 0.0018823147, 0.00059223175)
 visible = false
-mesh = SubResource("CapsuleMesh_witln")
-surface_material_override/0 = SubResource("StandardMaterial3D_8jpt8")
+mesh = SubResource("TorusMesh_witln")
+skeleton = NodePath("")
+surface_material_override/0 = ExtResource("4_y83ar")
 
 [connection signal="timeout" from="TrailTimer" to="." method="_on_trail_timer_timeout"]
 [connection signal="timeout" from="ResourceTimer" to="." method="_on_resource_timer_timeout"]
