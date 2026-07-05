@@ -32,6 +32,7 @@ const SHIP_RESOURCE = preload("res://Resources/ship_resource.tscn")
 
 var system_data : SolarSystemData
 var orbit_direction = 1
+var unit_orbit_time = 40 #time a body 1 unit away will orbit in
 
 var system_action_region_radius : float
 
@@ -135,7 +136,7 @@ func generate_system():
 		orbit_radius += randf_range(SpaceInfo.PLANET_SIZE_RANGE[0], SpaceInfo.PLANET_SIZE_RANGE[1])+planet_radius*2 #this is the major axis
 		orbit_radius += orbit_radius*(1-sqrt(1-orbit_eccentricity**2)) #If neccesary add difference between new major axis and minor axis
 		orbit_radius = orbit_radius #ceilf
-		var orbit_period = 40*pow(orbit_radius, 1.5)+ randf()*10 #keplers 3rd law
+		var orbit_period = unit_orbit_time*pow(orbit_radius, 1.5)#+ randf()*10 #random deviation #keplers 3rd law
 		#print(orbit_period)
 		var new_orbit_basis = Basis(Vector3.UP, randf_range(0,TAU))
 		#_planet_radius : float, _planet_color : Color, _major_orbit_radius : float, _orbit_basis : float, _orbit_period : float, _orbit_eccentricity : float
@@ -149,7 +150,8 @@ func generate_system():
 		$PlanetContainer.add_child(new_planet)
 		new_planet.update_planet()
 	system_action_region_radius = orbit_radius
-	resource_orbit_radius = system_action_region_radius/2
+	resource_orbit_radius = system_action_region_radius#/2
+	resource_orbit_period = unit_orbit_time*pow(resource_orbit_radius, 1.5)#+ randf()*10 #random deviation #keplers 3rd law
 
 
 
@@ -163,12 +165,12 @@ func orbit_planets(delta):
 
 var resource_orbit_rotation = 0
 var resource_orbit_radius = 1 #overriden to be relative to system radius in generate_system, may vary if orbit levels are added
+var resource_orbit_period = unit_orbit_time #also overriden
 var resource_orbit_positions : Array[Vector3] = []
 var resource_orbit_items : Array[ShipResource] = []
 var orbit_angular_separation = 0
 var orbit_count = 0
 var orbit_anglular_separation = 0
-
 func add_resource_to_system_orbit(res):
 	#removing from galaxy and adding to system
 	galaxy.detach_free_resource(res)
@@ -190,6 +192,7 @@ func orbit_resources(delta):
 	resource_orbit_rotation+= delta/2
 	for i in range(orbit_count):
 		var orbit_angle = i*orbit_anglular_separation + resource_orbit_rotation*orbit_direction
+		$ShipResourceContainer.get_child(i).position = Vector3(resource_orbit_radius*cos(orbit_angle),0.25,resource_orbit_radius*sin(orbit_angle))#y increased so orbit above ships
 
 	
 
