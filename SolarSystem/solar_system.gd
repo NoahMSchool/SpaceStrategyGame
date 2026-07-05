@@ -164,7 +164,7 @@ func orbit_planets(delta):
 var resource_orbit_rotation = 0
 var resource_orbit_radius = 1 #overriden to be relative to system radius in generate_system, may vary if orbit levels are added
 var resource_orbit_positions : Array[Vector3] = []
-var resource_orbit_items = []
+var resource_orbit_items : Array[ShipResource] = []
 var orbit_angular_separation = 0
 var orbit_count = 0
 var orbit_anglular_separation = 0
@@ -190,7 +190,6 @@ func orbit_resources(delta):
 	resource_orbit_rotation+= delta/2
 	for i in range(orbit_count):
 		var orbit_angle = i*orbit_anglular_separation + resource_orbit_rotation*orbit_direction
-		$ShipResourceContainer.get_child(i).position = Vector3(resource_orbit_radius*cos(orbit_angle),0,resource_orbit_radius*sin(orbit_angle))
 
 	
 

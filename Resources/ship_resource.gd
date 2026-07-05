@@ -2,8 +2,10 @@ extends Node3D
 class_name ShipResource
 
 var final_destination_system : SolarSystem
-var ship_speed = 2
 var destination_relative : Vector3 = Vector3(0,0,0)
+var ship_transmission_speed = 2 #used in transmissions
+var ship_max_speed = 3 #only used for short bursts when ship moves off path and must catch up
+var lock_ship_pos_to_target = false
 
 var pos_last_frame:= Vector3(0,0,0)
 
@@ -30,6 +32,6 @@ func end_transmission():
 func _process(delta: float) -> void:
 	if in_transmission:
 		pos_last_frame = global_position
-		global_position = global_position.move_toward(target_position, delta*ship_speed)
+		global_position = global_position.move_toward(target_position, delta*ship_transmission_speed)
 		if global_position == target_position and pos_last_frame != target_position:
 			end_transmission()
