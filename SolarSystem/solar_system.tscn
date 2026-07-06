@@ -48,7 +48,7 @@ autostart = true
 [node name="ShipResourceContainer" type="Node3D" parent="." unique_id=2060881521]
 
 [node name="ResourceTimer" type="Timer" parent="." unique_id=1254746077]
-wait_time = 5.0
+wait_time = 2.0
 
 [node name="VisualIndicator" type="MeshInstance3D" parent="." unique_id=702602521]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)

@@ -191,8 +191,10 @@ var orbit_anglular_separation = 0
 
 func add_resource_to_system_orbit(res):
 	#removing from galaxy and adding to system
+	var global_pos = res.global_position
 	galaxy.detach_free_resource(res)
 	$ShipResourceContainer.add_child(res)
+	res.global_position = global_pos
 	recalculate_orbits()
 	
 func detatch_resourse_from_system_orbit(res):
@@ -206,10 +208,10 @@ func recalculate_orbits():
 	orbit_anglular_separation = 2*PI/orbit_count
 	
 func orbit_resources(delta):
-	resource_orbit_rotation+= delta#*orbit_directionresource_orbit_angular_velocity
+	resource_orbit_rotation+= delta*orbit_direction*resource_orbit_angular_velocity
 	for i in range(orbit_count):
 		var orbit_angle = i*orbit_anglular_separation + resource_orbit_rotation
-		$ShipResourceContainer.get_child(i).position = Vector3(resource_orbit_radius*cos(orbit_angle),0.25,resource_orbit_radius*sin(orbit_angle))#y increased so orbit above ships
+		$ShipResourceContainer.get_child(i).follow_position = global_position + Vector3(resource_orbit_radius*cos(orbit_angle),0.25,resource_orbit_radius*sin(orbit_angle))#y increased so orbit above ships
 
 	
 
@@ -241,18 +243,19 @@ p.trail.mesh.curve.add_point(p.position)
 func generate_resource():
 	var new_resource = SHIP_RESOURCE.instantiate()
 	add_resource_to_system_orbit(new_resource)
+	new_resource.set_global_position(global_position)
 	new_resource.final_destination_system = galaxy.target_system
 	
 func process_resource(res):
-	print("recieving and processing at ", self, global_position)#if self == res.destination_system:
+	#print("recieving and processing at ", self, global_position)
 
 	if self != res.final_destination_system:
 		var next_destination : SolarSystem = galaxy.get_next_step(self, res.final_destination_system)
 		if next_destination:
-			print("start processing")
+			#print("start processing")
 			var ejection_direction = (next_destination.global_position-self.global_position).normalized()
 			var ejection_point = global_position+ejection_direction*system_action_region_radius
-			print("sending to ejection point")
+			#print("sending to ejection point")
 			res.send_to_position(ejection_point)
 			await res.target_reached
 			#print(res.destination_system)

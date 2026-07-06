@@ -13,8 +13,12 @@ var pos_last_frame:= Vector3(0,0,0)
 var target_position : Vector3
 var in_transmission:= false
 signal target_reached
-func _ready() -> void:
-	$TransportShip.global_position = global_position
+
+
+var follow_position : Vector3
+
+#func _ready() -> void:
+	#$TransportShip.global_position = global_position
 
 
 func send_to_position(pos):
@@ -31,15 +35,17 @@ func end_transmission():
 	target_reached.emit()
 	print("finished sending")
 
-		
-func _process(delta: float) -> void:
+
+
+func _process(delta: float) -> void: 
 	if in_transmission:
 		pos_last_frame = global_position
-		global_position = global_position.move_toward(target_position, delta*ship_transmission_speed)
-		if global_position == target_position and pos_last_frame != target_position:
+		pos_last_frame = follow_position
+		follow_position = follow_position.move_toward(target_position, delta*ship_transmission_speed)
+		if follow_position == target_position and pos_last_frame != target_position: #follow position is being used to determine when transmission finished (also affects 2 lines prior)
 			end_transmission()
 	if lock_ship_pos_to_target:
-		$TransportShip.global_position = global_position
+		global_position = follow_position
 	else:
-		$TransportShip.look_at(global_position)
-		$TransportShip.global_position = $TransportShip.global_position.move_toward(global_position, ship_max_speed*delta)
+		look_at(follow_position)
+		global_position = global_position.move_toward(follow_position, ship_max_speed*delta)
