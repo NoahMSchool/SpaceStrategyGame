@@ -39,10 +39,10 @@ func _process(delta: float) -> void:
 			global_position.x -= delta_mouse.x*pan_sens*cam.size
 		if Input.is_action_just_pressed("ScrollUp"):
 			cam.size+=1
-			cam.size = clampi(cam.size, 5, 50)
+			cam.size = clampi(cam.size, 3, 75)
 		if Input.is_action_just_pressed("ScrollDown"):
 			cam.size-=1
-			cam.size = clampi(cam.size, 1, 50)
+			cam.size = clampi(cam.size, 3, 75)
 		if Input.is_action_just_pressed("MouseWheelClick"):
 			cam.size = 25
 	else:

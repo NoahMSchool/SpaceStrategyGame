@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dxlr76o5yrvtl"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_witln"]
+
+[node name="BattleShip" type="Node3D" unique_id=939842774]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1110337574]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+mesh = SubResource("PrismMesh_witln")

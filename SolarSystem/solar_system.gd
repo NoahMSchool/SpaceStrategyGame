@@ -35,7 +35,7 @@ var path_globally_blocked = false: #Remove lateer for testing
 @onready var visual_indicator: MeshInstance3D = $VisualIndicator
 
 const BREAD_CRUMB = preload("res://3DDraw/bread_crumb.tscn")
-const SHIP_RESOURCE = preload("res://Resources/ship_resource.tscn")
+const RESOURCE_SHIP = preload("res://SpaceShip/resource_ship.tscn")
 
 var system_data : SolarSystemData
 var orbit_direction = 1
@@ -241,10 +241,10 @@ p.trail.mesh.curve.add_point(p.position)
 """
 
 func generate_resource():
-	var new_resource = SHIP_RESOURCE.instantiate()
-	add_resource_to_system_orbit(new_resource)
-	new_resource.set_global_position(global_position)
-	new_resource.final_destination_system = galaxy.target_system
+	var new_resource_ship = RESOURCE_SHIP.instantiate()
+	add_resource_to_system_orbit(new_resource_ship)
+	new_resource_ship.set_global_position(global_position)
+	new_resource_ship.final_destination_system = galaxy.target_system
 	
 func process_resource(res):
 	#print("recieving and processing at ", self, global_position)

@@ -1,5 +1,6 @@
 extends Node3D
-class_name ShipResource
+
+class_name BaseSpaceShip
 
 var final_destination_system : SolarSystem
 var destination_relative : Vector3 = Vector3(0,0,0)
@@ -39,7 +40,6 @@ func end_transmission():
 
 func _process(delta: float) -> void: 
 	if in_transmission:
-		pos_last_frame = global_position
 		pos_last_frame = follow_position
 		follow_position = follow_position.move_toward(target_position, delta*ship_transmission_speed)
 		if follow_position == target_position and pos_last_frame != target_position: #follow position is being used to determine when transmission finished (also affects 2 lines prior)
