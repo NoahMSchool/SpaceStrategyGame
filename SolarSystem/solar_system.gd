@@ -18,7 +18,6 @@ var team_ownership = TEAM.NEUTRAL:
 			TEAM.GREEN:
 				visual_indicator.visible = true
 				visual_indicator.set_surface_override_material(0,GREEN_MATERIAL)
-		
 
 const BLUE_MATERIAL = preload("res://OtherMaterials/blue_material.tres")
 const GREEN_MATERIAL = preload("res://OtherMaterials/green_material.tres")
@@ -26,7 +25,7 @@ const RED_MATERIAL = preload("res://OtherMaterials/red_material.tres")
 
 var hovering = false
 
-var path_globally_blocked = false: #Remove lateer for testing
+var path_globally_blocked = false: #Remove lateer for currently used for testing
 	set(value):
 		path_globally_blocked = value
 		$DisabledIndicator.visible = path_globally_blocked

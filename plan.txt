@@ -4,11 +4,12 @@ System attributes, resources
 
 moving ships squadron
 
-
 Use Components for node viewing istead of checking if node has child
 Use components for selectables
 
 Refactor with Skydome
+
+Rename Resources to supplies or something
 
 
 Next
@@ -24,13 +25,15 @@ Move Planet stuff out of system generation
 Make orbit data be stored by solar system not planet
 
 
-Noah Tasks
 
-Small
 
-Medium
+## Noah Tasks
 
-Large
+### Small
+
+### Medium
+
+### Large
 
 Smooth planet sending
 	Make active system regeon
