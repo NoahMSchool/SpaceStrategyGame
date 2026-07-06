@@ -21,8 +21,8 @@ var team_ownership = TEAM.NEUTRAL:
 		
 
 const BLUE_MATERIAL = preload("res://OtherMaterials/blue_material.tres")
-const GREEN_MATERIAL = preload("uid://8vw1icb52lme")
-const RED_MATERIAL = preload("uid://btb30xedw88sj")
+const GREEN_MATERIAL = preload("res://OtherMaterials/green_material.tres")
+const RED_MATERIAL = preload("res://OtherMaterials/red_material.tres")
 
 var hovering = false
 
@@ -168,9 +168,6 @@ func generate_system():
 	resource_orbit_period = unit_orbit_time*pow(resource_orbit_radius, 1.5)#+ randf()*10 #random deviation #keplers 3rd law
 	resource_orbit_angular_velocity = 2*PI/resource_orbit_period
 
-
-
-
 #use ecentricity to make eliptical orbits
 func orbit_planets(delta):
 	for p in self.planets:
@@ -213,33 +210,6 @@ func orbit_resources(delta):
 		var orbit_angle = i*orbit_anglular_separation + resource_orbit_rotation
 		$ShipResourceContainer.get_child(i).follow_position = global_position + Vector3(resource_orbit_radius*cos(orbit_angle),0.25,resource_orbit_radius*sin(orbit_angle))#y increased so orbit above ships
 
-	
-
-"""
-For Star
-
-make more of these ranges
-add brightness
-not using planet range currently
-
-print("before")
-		var new_planet_trail_mesh = TubeTrailMesh.new()
-		var new_planet_trail_mesh_curve = Curve3D.new()
-		new_planet_trail_mesh.curve = new_planet_trail_mesh_curve
-		assert(new_planet_trail_mesh_curve == new_planet_trail_mesh.curve)
-		print(new_planet_trail_mesh.curve)
-		new_planet_trail_mesh.radius = 0.05
-		new_planet_trail_mesh.material = load("res://Stars/bluewhitestar.tres")
-		
-		var new_planet_trail : Node3D = MeshInstance3D.new()
-		new_planet_trail.mesh = new_planet_trail_mesh
-		new_planet.trail = new_planet_trail
-		$TrailContainer.add_child(new_planet_trail)
-
-p.trail.mesh.curve.add_point(p.position)
-		
-"""
-
 func generate_resource():
 	var new_resource_ship = RESOURCE_SHIP.instantiate()
 	add_resource_to_system_orbit(new_resource_ship)
@@ -265,18 +235,18 @@ func process_resource(res):
 			res.send_to_position(next_destination.global_position+destination_relative)
 			await res.target_reached
 			next_destination.process_resource(res)
-
 			#print(next_destination.global_position)
 		else:
-			print("dead end")
+			pass
+			#print("resourse reached dead end")
 	else:
 		add_resource_to_system_orbit(res)
-		print("at final")
+		#print("at final")
 
 func send_resource(res, next_system):
-	print("sending resourse to ", next_system)
+	#print("sending resourse to ", next_system)
 	res.send_to_destination_system(next_system)
-	print("sending to ", next_system)
+	#print("sending to ", next_system)
 	
 		#var ray_length = self.global_position.distance_to(next_destination)
 		#var from = ejection_point
@@ -300,7 +270,6 @@ func get_resourse_recieve_point(direction : Vector3):#gives relative position
 	return recieve_point
 	
 
-	
 func _on_trail_timer_timeout() -> void:
 	if not system_active:
 		return
