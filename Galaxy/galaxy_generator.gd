@@ -73,7 +73,7 @@ func _ready() -> void:
 				
 		system_positions.append(pos)
 	
-	print(system_positions.size())
+	#print(system_positions.size())
 	for i in range(system_positions.size()-1):
 		var sp = system_positions[i]
 		var new_system = SYSTEM.instantiate()
@@ -91,7 +91,7 @@ func _ready() -> void:
 		
 func set_up_astar(max_distance):
 	var new_algo := StarAStar3D.new()
-	print("Generating with max ", max_distance, " and systems ", systems.size())
+	#print("Generating with max ", max_distance, " and systems ", systems.size())
 
 	if (!systems.size()):
 		return new_algo
@@ -109,7 +109,7 @@ func set_up_astar(max_distance):
 				new_algo.connect_points(sys1.get_instance_id(), sys2.get_instance_id())
 				if sys1.position.distance_to(sys2.position)<max_distance:
 					Draw3D.draw_line(sys1.position,sys2.position)
-	print("We have systems ", systems.size())	
+	#print("We have systems ", systems.size())	
 	return new_algo
 
 func set_system_disabled(sys: SolarSystem, disabled: bool = true):
@@ -125,13 +125,13 @@ func get_next_step(from, to):
 	return next
 
 
-func add_free_resource(resource_node, global_pos = null):
-	$FreeShipContiner.add_child(resource_node)
+func add_free_ship(ship_node, global_pos = null):
+	$FreeShipContiner.add_child(ship_node)
 	if global_pos:
-		resource_node.global_position = global_pos
+		ship_node.global_position = global_pos
 	
-func detach_free_resource(resource_node):
-	$FreeShipContiner.remove_child(resource_node)
+func detach_free_ship(ship_node):
+	$FreeShipContiner.remove_child(ship_node)
 	
 	
 func _process(delta: float) -> void:

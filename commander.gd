@@ -66,7 +66,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			var collider = ray_collision["collider"]
 			var collider_system = collider.get_parent()
 			move_system(collider_system)
-			print(collider_system)
+			#print(collider_system)
 			
 func move_system(system_node : Node3D):
 	print("from : ", current_system)

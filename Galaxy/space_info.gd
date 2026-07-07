@@ -11,7 +11,6 @@ static var startypes: Array[StarType] = [
 	#StarType.new("ShaderStar", 0.8, 0.4, preload("res://Stars/shaderstar.tres"), Vector2i(1,3), 6, 20),
 ]
 
-
 const PLANET_SEPARATION_RANGE = [0.1, 0.75]
 const PLANET_SIZE_RANGE = [0.05,0.25]
 
@@ -31,3 +30,5 @@ const PLANET_COLORS: Array[Color] = [
 	
 	
 ]
+#transport ship at time of writing around 0.25 radius
+const ship_transmission_zone_radius = 0.3

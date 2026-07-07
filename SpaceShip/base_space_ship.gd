@@ -24,7 +24,7 @@ var follow_position : Vector3
 
 func send_to_position(pos):
 	target_position = pos
-	print("sending to ", target_position)
+	#print("sending to ", target_position)
 	begin_transmission()
 
 func begin_transmission():
@@ -34,7 +34,7 @@ func begin_transmission():
 func end_transmission():
 	in_transmission = false
 	target_reached.emit()
-	print("finished sending")
+	#print("finished sending")
 
 
 

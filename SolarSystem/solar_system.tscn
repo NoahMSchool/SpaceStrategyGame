@@ -45,9 +45,9 @@ autostart = true
 
 [node name="TrailContainer" type="Node3D" parent="." unique_id=518089550]
 
-[node name="ShipResourceContainer" type="Node3D" parent="." unique_id=2060881521]
+[node name="ShipContainer" type="Node3D" parent="." unique_id=2060881521]
 
-[node name="ResourceTimer" type="Timer" parent="." unique_id=1254746077]
+[node name="SupplyTimer" type="Timer" parent="." unique_id=1254746077]
 wait_time = 2.0
 
 [node name="VisualIndicator" type="MeshInstance3D" parent="." unique_id=702602521]
@@ -78,4 +78,4 @@ skeleton = NodePath("")
 surface_material_override/0 = ExtResource("4_y83ar")
 
 [connection signal="timeout" from="TrailTimer" to="." method="_on_trail_timer_timeout"]
-[connection signal="timeout" from="ResourceTimer" to="." method="_on_resource_timer_timeout"]
+[connection signal="timeout" from="SupplyTimer" to="." method="_on_supply_timer_timeout"]
