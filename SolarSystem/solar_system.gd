@@ -116,7 +116,72 @@ func _input(event: InputEvent) -> void:
 		
 	if Input.is_action_just_pressed("t") and system_active:
 		galaxy.target_system = self
-			
+
+var ejection_points_2D = []
+func calculate_2D_ejection_points():
+	var hex_radius = SpaceInfo.ship_transmission_zone_radius
+	var centre = Vector2.ZERO
+	ejection_points_2D = [centre]#,centre+Vector2(hex_radius*2,0), centre-Vector2(hex_radius*2,0)]
+	var i = 0
+	var current_radius = hex_radius
+	var current_angle = 0
+	while i < 6:
+		i+=1
+		#current_radius = int(current_radius*i/6) +1
+		current_angle = i*PI/3
+		ejection_points_2D.append(centre + Vector2(2*current_radius*cos(current_angle), 2*current_radius*sin(current_angle)))
+	
+func get_free_ejection_point(ejection_direction):
+	var centre_ejection_point = global_position+ejection_direction*system_action_region_radius
+	#return centre_ejection_point
+	var point_found = false
+	var ejection_point : Vector3
+	var x_unit = ejection_direction.cross(Vector3.UP).normalized()
+	var y_unit = ejection_direction.cross(x_unit).normalized()
+	
+	
+	var i = randi_range(0, ejection_points_2D.size()-1)
+	ejection_point = centre_ejection_point + ejection_points_2D[i].x*x_unit + ejection_points_2D[i].y*y_unit
+	return ejection_point
+	
+	#while not point_found:
+		#ejection_point = centre_ejection_point + ejection_points_2D[i].x*x_unit + ejection_points_2D[i].y*y_unit
+		##check if point conjsted
+		#var from = ejection_point
+		#var to = ejection_point+ejection_direction*10
+		#var space = get_world_3d().direct_space_state
+		#var ray_query = PhysicsRayQueryParameters3D.new()
+		#ray_query.collide_with_areas = true
+		#ray_query.from = from
+		#ray_query.to = to
+		#ray_query.hit_from_inside = true
+		#var raycast_result = space.intersect_ray(ray_query)
+		#print(raycast_result)
+		#if raycast_result:
+			#print(raycast_result["position"].distance_to(ejection_point))
+			#if raycast_result["position"].distance_to(ejection_point)>2:
+				#point_found = true
+			#elif i==2:
+				#return centre_ejection_point
+			#else:
+				#i += 1
+				#print(i)
+		#else:
+			#point_found = true
+	#print(ejection_point)
+	#return ejection_point
+
+		#var ray_length = self.global_position.distance_to(next_destination)
+		#var from = ejection_point
+		#var to = ejection_point+ejection_direction*ray_length
+		#var space = get_world_3d().direct_space_state
+		#var ray_query = PhysicsRayQueryParameters3D.new()
+		#ray_query.collide_with_areas = true
+		#ray_query.from = from
+		#ray_query.to = to
+		#var raycast_result = space.intersect_ray(ray_query)
+
+
 func pick_weighted_startype() -> StarType:
 	var total_weight_sum : float = 0.0
 	for st in SpaceInfo.startypes:
@@ -166,6 +231,8 @@ func generate_system():
 	ship_orbit_radius = system_action_region_radius#/2
 	ship_orbit_period = unit_orbit_time*pow(ship_orbit_radius, 1.5)#+ randf()*10 #random deviation #keplers 3rd law
 	ship_orbit_angular_velocity = 2*PI/ship_orbit_period
+	
+	calculate_2D_ejection_points()
 
 #use ecentricity to make eliptical orbits
 func orbit_planets(delta):
@@ -223,15 +290,17 @@ func accept_ship(ship):
 		if next_destination:
 			#print("start processing")
 			var ejection_direction = (next_destination.global_position-self.global_position).normalized()
-			var ejection_point = global_position+ejection_direction*system_action_region_radius
+			var ejection_point = get_free_ejection_point(ejection_direction)
 			#print("sending to ejection point")
 			ship.send_to_position(ejection_point)
 			await ship.target_reached
 			#print(ship.destination_system)
 			#ship.destination_system = next_destination
 			var destination_relative = next_destination.get_ship_recieve_point(ejection_direction)
+				
+			var destination_pos = ejection_point+ejection_direction*(global_position.distance_to(next_destination.global_position)-(system_action_region_radius+next_destination.get_system_active_region_radius()))
 			
-			ship.send_to_position(next_destination.global_position+destination_relative)
+			ship.send_to_position(destination_pos)
 			await ship.target_reached
 			next_destination.accept_ship(ship)
 			#print(next_destination.global_position)
@@ -269,6 +338,9 @@ func get_ship_recieve_point(direction : Vector3):#gives relative position
 		direction = direction.normalized()
 	var recieve_point = -direction*system_action_region_radius
 	return recieve_point
+
+func get_system_active_region_radius():
+	return self.system_action_region_radius
 	
 
 func _on_trail_timer_timeout() -> void:

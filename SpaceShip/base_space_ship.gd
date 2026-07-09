@@ -18,10 +18,6 @@ signal target_reached
 
 var follow_position : Vector3
 
-#func _ready() -> void:
-	#$TransportShip.global_position = global_position
-
-
 func send_to_position(pos):
 	target_position = pos
 	#print("sending to ", target_position)

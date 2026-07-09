@@ -35,8 +35,4 @@ Make orbit data be stored by solar system not planet
 
 ### Large
 
-Smooth planet sending
-	Make active system regeon
-	select point on plane tangent to system to be start of journey
-	shoot ray  parralell to direction of centres of system to find the end point
-	give ship velocity or lerp between start and end points.
+Make more rigourous algorithm for selecting if an ejection point is free
