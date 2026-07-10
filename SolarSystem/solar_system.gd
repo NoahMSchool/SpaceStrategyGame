@@ -284,7 +284,7 @@ func generate_supply():
 	
 func accept_ship(ship):
 	#print("recieving and processing at ", self, global_position)
-
+	
 	if self != ship.final_destination_system:
 		var next_destination : SolarSystem = galaxy.get_next_step(self, ship.final_destination_system)
 		if next_destination:
@@ -292,17 +292,18 @@ func accept_ship(ship):
 			var ejection_direction = (next_destination.global_position-self.global_position).normalized()
 			var ejection_point = get_free_ejection_point(ejection_direction)
 			#print("sending to ejection point")
+			ship.next_system = null
 			ship.send_to_position(ejection_point)
 			await ship.target_reached
 			#print(ship.destination_system)
-			#ship.destination_system = next_destination
+			ship.next_system = next_destination
 			var destination_relative = next_destination.get_ship_recieve_point(ejection_direction)
 				
 			var destination_pos = ejection_point+ejection_direction*(global_position.distance_to(next_destination.global_position)-(system_action_region_radius+next_destination.get_system_active_region_radius()))
 			
 			ship.send_to_position(destination_pos)
-			await ship.target_reached
-			next_destination.accept_ship(ship)
+			#await ship.target_reached
+			#next_destination.accept_ship(ship)
 			#print(next_destination.global_position)
 		else:
 			pass
