@@ -284,9 +284,9 @@ func generate_supply():
 	new_supply_ship.final_destination_system = galaxy.target_system
 
 func accept_ship(ship):
-	print("Accepting at ", self, global_position)
 	if ship.next_system and ship.next_system != self: #check if ship is going to this system
 		return
+	print("Accepting at ", self, global_position)
 	if self != ship.final_destination_system:
 		var next_destination : SolarSystem = galaxy.get_next_step(self, ship.final_destination_system)
 		if next_destination:

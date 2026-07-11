@@ -10,7 +10,8 @@ const SYSTEM = preload("res://SolarSystem/solar_system.tscn")
 	set (val):
 		print("Changing Max Connection to", val)
 		max_connection_distance = val
-		algo = set_up_astar(max_connection_distance)
+		algo = make_astar_algorithm(max_connection_distance)
+		draw_algorithm_lines(algo)
 
 #const galaxy_radius = 100
 @export var disc_height = 10
@@ -86,14 +87,25 @@ func _ready() -> void:
 	if systems.size()>0:
 		target_system = systems[0]
 	
-	algo = set_up_astar(max_connection_distance)
+	algo = make_astar_algorithm(max_connection_distance)
+	draw_algorithm_lines(algo)
+
+func draw_algorithm_lines(algo: StarAStar3D):
+	Draw3D.delete_planet_lines()
+	var algo_points = algo.get_point_ids()
+	for p1 in algo_points:
+		var p1_pos = algo.get_point_position(p1)
+		var p1_connections = algo.get_point_connections(p1)
+		for p2 in p1_connections:
+			var p2_pos = algo.get_point_position(p2)
+			if not algo.is_filtered(p1, p2):
+				Draw3D.draw_line(p1_pos, p2_pos)
 	
-		
-func set_up_astar(max_distance):
+func make_astar_algorithm(max_distance):
 	var new_algo := StarAStar3D.new()
 	#print("Generating with max ", max_distance, " and systems ", systems.size())
 
-	if (!systems.size()):
+	if !systems.size():
 		return new_algo
 		
 	new_algo.set_neighbor_filter_enabled(true)
@@ -107,15 +119,12 @@ func set_up_astar(max_distance):
 		for sys2 in systems:
 			if sys1 != sys2:
 				new_algo.connect_points(sys1.get_instance_id(), sys2.get_instance_id())
-				if sys1.position.distance_to(sys2.position)<max_distance:
-					Draw3D.draw_line(sys1.position,sys2.position)
-	#print("We have systems ", systems.size())	
 	return new_algo
 
 func set_system_disabled(sys: SolarSystem, disabled: bool = true):
 	algo.set_point_disabled(sys.get_instance_id(), disabled)
 	print("Setting disabled ", disabled, " on system ", sys)
-	
+	draw_algorithm_lines(algo)
 func get_next_step(from, to):
 	var next = null
 	if from and to and from != to:

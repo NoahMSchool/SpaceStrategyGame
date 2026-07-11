@@ -50,17 +50,18 @@ func end_transmission():
 #	origin_poisition = temp
 
 func _process(delta: float) -> void: 
-	if target_position:
-		$DebugSphereRed.visible = true
-		$DebugSphereRed.global_position = target_position
-	else:
-		$DebugSphereRed.visible = false
-	$DebugSphereBlue.global_position = follow_position
+	#if target_position:
+		#$DebugSphereRed.visible = true
+		#$DebugSphereRed.global_position = target_position
+	#else:
+		#$DebugSphereRed.visible = false
+	#$DebugSphereBlue.global_position = follow_position
 	#print(global_position.round(), follow_position.round(), target_position.round())
+	$DebugSphereBlue.global_position = follow_position
 	if in_transmission:
 		pos_last_frame = follow_position
 		follow_position = follow_position.move_toward(target_position, delta*ship_transmission_speed)
-		if follow_position == target_position and pos_last_frame != follow_position: #follow position is being used to determine when transmission finished (also affects 2 lines prior)
+		if follow_position == target_position and pos_last_frame != target_position: #follow position is being used to determine when transmission finished (also affects 2 lines prior)
 			end_transmission()
 	if lock_ship_pos_to_target:
 		global_position = follow_position

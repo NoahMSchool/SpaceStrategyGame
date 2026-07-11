@@ -125,10 +125,12 @@ shape = SubResource("CapsuleShape3D_witln")
 
 [node name="DebugSphereRed" type="MeshInstance3D" parent="." unique_id=112448900]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.30765298, 0)
+visible = false
 mesh = SubResource("SphereMesh_witln")
 surface_material_override/0 = ExtResource("2_v7hyj")
 
 [node name="DebugSphereBlue" type="MeshInstance3D" parent="." unique_id=942159851]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.30765298, 0)
+visible = false
 mesh = SubResource("SphereMesh_witln")
 surface_material_override/0 = ExtResource("3_0ymdx")
