@@ -70,8 +70,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			#print(collider_system)
 			
 func move_system(system_node : Node3D):
-	print("from : ", current_system)
-	print("to : ", system_node)
+	#print("from : ", current_system)
+	#print("to : ", system_node)
 	
 	if current_system:
 		current_system.system_active = false

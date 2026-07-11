@@ -1,6 +1,8 @@
 [gd_scene format=4 uid="uid://dm0pig2dlqo0e"]
 
 [ext_resource type="Script" uid="uid://cljpkthi0yd48" path="res://SpaceShip/supply_ship.gd" id="1_efiy3"]
+[ext_resource type="Material" uid="uid://btb30xedw88sj" path="res://OtherMaterials/red_material.tres" id="2_v7hyj"]
+[ext_resource type="Material" uid="uid://bkanweaai2shj" path="res://OtherMaterials/blue_material.tres" id="3_0ymdx"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h4ojx"]
 resource_name = "GreyMetal"
@@ -103,6 +105,10 @@ shadow_mesh = SubResource("ArrayMesh_i3eda")
 radius = 0.25
 height = 0.6
 
+[sub_resource type="SphereMesh" id="SphereMesh_witln"]
+radius = 0.15
+height = 0.3
+
 [node name="SupplyShip" type="Node3D" unique_id=1299991569]
 script = ExtResource("1_efiy3")
 
@@ -116,3 +122,13 @@ skeleton = NodePath("")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1572857840]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_witln")
+
+[node name="DebugSphereRed" type="MeshInstance3D" parent="." unique_id=112448900]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.30765298, 0)
+mesh = SubResource("SphereMesh_witln")
+surface_material_override/0 = ExtResource("2_v7hyj")
+
+[node name="DebugSphereBlue" type="MeshInstance3D" parent="." unique_id=942159851]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.30765298, 0)
+mesh = SubResource("SphereMesh_witln")
+surface_material_override/0 = ExtResource("3_0ymdx")
