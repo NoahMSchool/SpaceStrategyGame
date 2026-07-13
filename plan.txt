@@ -1,29 +1,13 @@
-Current System
 
-System attributes, resources
+## TODO
 
-moving ships squadron
+Make Planets more procedural textures like google illustrations, Use primary colors and secondary colors and textures
 
-Use Components for node viewing istead of checking if node has child
-Use components for selectables
-
-Refactor with Skydome
-
-Rename Resources to supplies or something
-
-
-Next
-
-Make Planets more procedural textures like google illustrations
-Use Blender
-Use primary colors and secondary colors and textures
-
-Use GDShader for stars
-
+Make fog like Shader for below systems
+Make more rigourous algorithm for selecting if an ejection point is free
 
 Move Planet stuff out of system generation
 Make orbit data be stored by solar system not planet
-
 
 
 
@@ -34,5 +18,3 @@ Make orbit data be stored by solar system not planet
 ### Medium
 
 ### Large
-
-Make more rigourous algorithm for selecting if an ejection point is free

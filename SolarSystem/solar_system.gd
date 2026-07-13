@@ -1,23 +1,31 @@
 extends Node3D
 class_name SolarSystem
 
-enum TEAM {NEUTRAL, RED, BLUE, GREEN}
 
-var team_ownership = TEAM.NEUTRAL:
+var team_ownership: Team  = null:
 	set(value):
-		team_ownership = value
-		match value:
-			TEAM.NEUTRAL:
-				visual_indicator.visible = false
-			TEAM.BLUE:
-				visual_indicator.visible = true
-				visual_indicator.set_surface_override_material(0,BLUE_MATERIAL)
-			TEAM.RED:
-				visual_indicator.visible = true
-				visual_indicator.set_surface_override_material(0,RED_MATERIAL)
-			TEAM.GREEN:
-				visual_indicator.visible = true
-				visual_indicator.set_surface_override_material(0,GREEN_MATERIAL)
+		if value:
+			team_ownership = value
+			visual_indicator.visible = true
+			visual_indicator.set_surface_override_material(0, team_ownership.team_mat)
+		else: 
+			visual_indicator.visible = false
+#TEAM.NEUTRAL:
+	#set(value):
+		#team_ownership = value
+		#match value:
+			#TEAM.NEUTRAL:
+				#visual_indicator.visible = false
+			#TEAM.BLUE:
+				#visual_indicator.visible = true
+				#visual_indicator.set_surface_override_material(0,BLUE_MATERIAL)
+			#TEAM.RED:
+				#visual_indicator.visible = true
+				#visual_indicator.set_surface_override_material(0,RED_MATERIAL)
+			#TEAM.GREEN:
+				#visual_indicator.visible = true
+				#visual_indicator.set_surface_override_material(0,GREEN_MATERIAL)
+
 
 const BLUE_MATERIAL = preload("res://OtherMaterials/blue_material.tres")
 const GREEN_MATERIAL = preload("res://OtherMaterials/green_material.tres")
@@ -94,6 +102,13 @@ func _mouse_selected(camera: Node, event: InputEvent, event_position: Vector3, n
 		selected.emit(self)
 		print("selected")
 
+var team_num = 0:
+	set(value):
+		team_num = value%(SpaceInfo.teams.size()+1)
+		if team_num == 0:
+			team_ownership = null
+		else:
+			team_ownership = SpaceInfo.teams[team_num-1]
 
 func _input(event: InputEvent) -> void:
 	if system_active && Input.is_action_just_pressed("r"):
@@ -109,8 +124,8 @@ func _input(event: InputEvent) -> void:
 		$SupplyTimer.paused = !$SupplyTimer.paused
 		
 	if Input.is_action_just_pressed("z") and system_active:
-		team_ownership = (team_ownership+1)%4 #hardcoded possibilities
-		
+		#team_ownership = SpaceInfo.teams[0]
+		team_num += 1
 	if Input.is_action_just_pressed("x") and system_active:
 		path_globally_blocked = not path_globally_blocked
 		
@@ -317,6 +332,7 @@ func accept_ship(ship):
 	else:
 		add_ship_to_system_orbit(ship)
 		#print("at final")
+		
 func connect_ship_target_reached_to_accept(ship):
 	ship.target_reached.connect(accept_ship)
 

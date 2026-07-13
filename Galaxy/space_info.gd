@@ -14,21 +14,35 @@ static var startypes: Array[StarType] = [
 const PLANET_SEPARATION_RANGE = [0.1, 0.75]
 const PLANET_SIZE_RANGE = [0.05,0.25]
 
-const PLANET_COLORS: Array[Color] = [
-	Color("#ff0033"), # 0: Plasma Red (Volcanic/Aggressive)
-	Color("#ff5e00"), # 1: Solar Orange (Lava/Star Surface)
-	Color("#ffd000"), # 2: Star Yellow (High Energy/Core)
-	Color("#2bff00"), # 3: Nuclear Green (Toxic/Radioactive)
-	Color("#00ff95"), # 4: Alien Teal (Exotic Atmosphere)
-	Color("#00f2ff"), # 5: Cryo Cyan (Ice/Electric)
-	Color("#0066ff"), # 6: Deep Blue (Oceanic/Cobalt)
-	Color("#7a00ff"), # 7: Void Purple (Nebula/Mystic)
-	Color("#ff00ff"), # 8: Cyber Magenta (Synthetic/Psionic)
-	Color("#ff0066"), # 9: Nebula Pink (Gaseous/Hot)
-	Color("#e0faff"), # 10: Supernova White (Pulsar/Cold Star)
-	Color("#ffaa00"),  # 11: Amber Gold (Ancient/Desert)
-	
+
+const PLANET_COLORS = [ #source : Coolors
+	#candy pop
+	Color("#9b5de5"),
+	Color("#f15bb5"),
+	#Color("#fee440"),
+	Color("#00bbf9"),
+	#Color("#00f5d4"),
+	#Mystic FireFly Glow
+	Color("#58355e"),
+	#Color("#e03616"),
+	#Color("#fff689"),
+	Color("#cfffb0"),
+	Color("#5998c5"),
+	#Sunset Ocean Orchid
+	#Color("#ff595e"),
+	#Color("#ff924c"),
+	#Color("#ffca3a"),
+	Color("#8ac926"),
+	Color("#1982c4"),
+	Color("#6a4c93")
+]
+
+static var teams = [
+	Team.new(0, "PurplePinkPeople", Color(0.666, 0.515, 0.743, 1.0)),
+	Team.new(0, "PurplePinkPeople", Color(9.666, 0.115, 0.743, 1.0)),
+	Team.new(0, "PurplePinkPeople", Color(0.166, 0.115, 0.943, 1.0)),
 	
 ]
+
 #transport ship at time of writing around 0.25 radius
 const ship_transmission_zone_radius = 0.3

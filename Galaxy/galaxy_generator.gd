@@ -23,9 +23,10 @@ var target_system : SolarSystem = null:
 			$TargetIndicator.position = target_system.position
 			$TargetIndicator.visible = true
 
+#var current_team : Team = null
 var systems : Array[SolarSystem] = []
 var root_system : SolarSystem
-var algo := StarAStar3D.new()
+var algo : StarAStar3D
 
 func _ready() -> void:
 	#get positions
@@ -104,7 +105,6 @@ func draw_algorithm_lines(algo: StarAStar3D):
 func make_astar_algorithm(max_distance):
 	var new_algo := StarAStar3D.new()
 	#print("Generating with max ", max_distance, " and systems ", systems.size())
-
 	if !systems.size():
 		return new_algo
 		
@@ -112,9 +112,7 @@ func make_astar_algorithm(max_distance):
 	new_algo.max_distance = max_distance
 	for sys in systems:
 		var id = sys.get_instance_id()
-		new_algo.add_point(id, sys.position)
-	
-	Draw3D.delete_planet_lines()
+		new_algo.add_point(id, sys.position)	
 	for sys1 in systems:
 		for sys2 in systems:
 			if sys1 != sys2:
