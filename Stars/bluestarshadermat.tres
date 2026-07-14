@@ -1,6 +1,6 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dma5kd4x7dai5"]
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dma5kd4x7dai5"]
 
-[ext_resource type="Shader" path="res://Stars/shaderstar.gdshader" id="1_nyhfg"]
+[ext_resource type="Shader" uid="uid://ceu4aok83l53s" path="res://Stars/shaderstar.gdshader" id="1_nyhfg"]
 
 [resource]
 render_priority = 0
@@ -9,4 +9,4 @@ shader_parameter/star_color = Color(0.458824, 0.517647, 0.886275, 1)
 shader_parameter/emmision_strength = 3.0
 shader_parameter/starspot_color = Color(0.7209, 0.811087, 0.89, 1)
 shader_parameter/spot_speed = 1.0
-shader_parameter/spot_scale = 100.0
+shader_parameter/spot_scale = 200.0

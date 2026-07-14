@@ -14,9 +14,8 @@ var orbit_angle : float = 0#randf_range(0, 2*PI)
 
 var planet_building
 
-func _init(_planet_radius : float, _planet_color : Color, _major_orbit_radius : float, _orbit_basis : Basis, _orbit_period : float, _orbit_eccentricity : float) -> void:
+func _init(_planet_radius : float, _major_orbit_radius : float, _orbit_basis : Basis, _orbit_period : float, _orbit_eccentricity : float) -> void:
 	self.planet_radius = _planet_radius
-	self.planet_color = _planet_color
 
 	self.orbit_eccentricity = _orbit_eccentricity
 	self.major_orbit_radius = _major_orbit_radius

@@ -9,12 +9,8 @@ uniform vec3 starspot_color : source_color = vec3(1,0.9,0.9);
 
 // 1 every two pi seconds
 uniform float spot_speed = 1;//0.15;
-uniform float spot_scale = 20;
+uniform float spot_scale = 100;
 
-
-void vertex() {
-	// Called for every vertex the material is visible on.
-}
 
 float hash21(vec2 p) {
 	p = fract(p * vec2(123.34, 456.21));

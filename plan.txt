@@ -9,6 +9,7 @@ Make more rigourous algorithm for selecting if an ejection point is free
 Move Planet stuff out of system generation
 Make orbit data be stored by solar system not planet
 
+Make UI
 
 
 ## Noah Tasks

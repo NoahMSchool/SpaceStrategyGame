@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://blpvbp65hk2f6"]
+
+[ext_resource type="Shader" uid="uid://t5b4kvwdwd2l" path="res://Planet/planetshader.gdshader" id="1_jxngr"]
+[ext_resource type="Texture2D" uid="uid://b2faxpqnsir2y" path="res://Planet/planet_textures/muddybeachcolor.png" id="2_wotb7"]
+[ext_resource type="Texture2D" uid="uid://b6wtknbtstsm" path="res://Planet/planet_textures/muddybeachoughness.png" id="3_atb4p"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_jxngr")
+shader_parameter/primary = Color(0.8466626, 0.488832, 0.66851485, 1)
+shader_parameter/seconary = Color(0.6606106, 0.377259, 0.4078015, 1)
+shader_parameter/tertiary = Color(0.19485524, 0.33596778, 0.22745132, 1)
+shader_parameter/color_texture = ExtResource("2_wotb7")
+shader_parameter/roughness_texture = ExtResource("3_atb4p")

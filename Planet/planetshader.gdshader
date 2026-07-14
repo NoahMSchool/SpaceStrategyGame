@@ -5,15 +5,20 @@ uniform vec3 primary : source_color;
 uniform vec3 seconary : source_color;
 uniform vec3 tertiary : source_color;
 
-uniform sampler2D color : source_color;
-uniform sampler2D roughness : source_color;
+uniform sampler2D color_texture;
+uniform sampler2D roughness_texture;
 
-void vertex() {
-	// Called for every vertex the material is visible on.
-}
+
 
 void fragment() {
-	// Called for every pixel the material is visible on.
+	vec3 color_mask = texture(color_texture, UV).rgb;
+	vec3 pixel_color = color_mask.r * primary + color_mask.g*seconary + color_mask.b*tertiary;
+	ALBEDO = pixel_color;
+
+	float pixel_roughness = texture(roughness_texture,UV).r;
+	ROUGHNESS = pixel_roughness;
+	
+	
 }
 
 //void light() {

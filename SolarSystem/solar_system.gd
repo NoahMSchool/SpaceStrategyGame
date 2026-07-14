@@ -223,7 +223,6 @@ func generate_system():
 		var planet_radius = randf_range(SpaceInfo.PLANET_SIZE_RANGE[0], SpaceInfo.PLANET_SIZE_RANGE[1])*0.5 #planet mesh import has radius 2
 		var new_planet = PLANET.instantiate()
 		new_planet.name = "Planet" + str(i)
-		var planet_color = SpaceInfo.PLANET_COLORS.pick_random()
 		var orbit_eccentricity = randf()*0.5
 		
 		orbit_radius += randf_range(SpaceInfo.PLANET_SIZE_RANGE[0], SpaceInfo.PLANET_SIZE_RANGE[1])+planet_radius*2 #this is the major axis
@@ -233,7 +232,7 @@ func generate_system():
 		#print(orbit_period)
 		var new_orbit_basis = Basis(Vector3.UP, randf_range(0,TAU))
 		#_planet_radius : float, _planet_color : Color, _major_orbit_radius : float, _orbit_basis : float, _orbit_period : float, _orbit_eccentricity : float
-		var new_planet_data = PlanetData.new(planet_radius, planet_color, orbit_radius, new_orbit_basis, orbit_period, orbit_eccentricity)
+		var new_planet_data = PlanetData.new(planet_radius, orbit_radius, new_orbit_basis, orbit_period, orbit_eccentricity)
 		new_planet.planet_data = new_planet_data
 		
 		#new_planet.position.x = new_planet.planet_data.orbit_radius
