@@ -109,6 +109,7 @@ func make_astar_algorithm(max_distance):
 		return new_algo
 		
 	new_algo.set_neighbor_filter_enabled(true)
+	new_algo.team_id = 2
 	new_algo.max_distance = max_distance
 	for sys in systems:
 		var id = sys.get_instance_id()

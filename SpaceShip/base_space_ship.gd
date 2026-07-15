@@ -26,13 +26,13 @@ var follow_position : Vector3
 func send_to_position(pos):
 	origin_poisition = global_position
 	target_position = pos
-	print("sending to ", target_position)
+	#print("sending to ", target_position)
 	begin_transmission()
 
 func begin_transmission():
 	in_transmission = true
 	look_at(target_position)
-	print("beggining_transmisison")
+	print("begining_transmisison")
 
 func end_transmission():
 	print("ending_transmission")
@@ -40,14 +40,14 @@ func end_transmission():
 	#print("emmiting")
 	#print("finished sending")
 	target_reached.emit(self)
-	#if next_system: #maybe change as this is not generic to ship movement
-	#	print("accepting")
-	#	next_system.accept_ship(self)
 
-#func revert_transmission():
-#	var temp = target_position
-#	target_position = origin_poisition
-#	origin_poisition = temp
+func revert_transmission():
+	var temp = target_position
+	target_position = origin_poisition
+	origin_poisition = temp
+
+func set_lock_to_target(value : bool):
+	lock_ship_pos_to_target = value
 
 func _process(delta: float) -> void: 
 	#if target_position:
@@ -63,8 +63,9 @@ func _process(delta: float) -> void:
 		follow_position = follow_position.move_toward(target_position, delta*ship_transmission_speed)
 		if follow_position == target_position and pos_last_frame != target_position: #follow position is being used to determine when transmission finished (also affects 2 lines prior)
 			end_transmission()
+			
+	look_at(follow_position)
 	if lock_ship_pos_to_target:
 		global_position = follow_position
 	else:
-		look_at(follow_position)
 		global_position = global_position.move_toward(follow_position, ship_max_speed*delta)

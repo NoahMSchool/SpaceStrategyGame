@@ -266,17 +266,19 @@ var orbit_angular_separation = 0
 var orbit_count = 0
 var orbit_anglular_separation = 0
 
-func add_ship_to_system_orbit(res):
+func add_ship_to_system_orbit(ship):
 	#removing from galaxy and adding to system
-	var global_pos = res.global_position
-	galaxy.detach_free_ship(res)
-	$ShipContainer.add_child(res)
-	res.global_position = global_pos
+	var global_pos = ship.global_position
+	galaxy.detach_free_ship(ship)
+	$ShipContainer.add_child(ship)
+	#ship.set_lock_to_target(true)
+	ship.global_position = global_pos
 	recalculate_orbits()
 	
 func detatch_ship_from_system_orbit(ship):
 	var global_pos = ship.global_position
 	$ShipContainer.remove_child(ship)
+	ship.set_lock_to_target(false)
 	galaxy.add_free_ship(ship, global_pos)
 	recalculate_orbits()
 
@@ -294,13 +296,14 @@ func generate_supply():
 	var new_supply_ship = SUPPLY_SHIP.instantiate()
 	add_ship_to_system_orbit(new_supply_ship)
 	new_supply_ship.set_global_position(global_position)
-	connect_ship_target_reached_to_accept(new_supply_ship)
+	connect_ship_target_reached_to_accept(new_supply_ship)#make it so when ship reaches this system it is accepted in future (eg if it returns)
+	new_supply_ship.next_system = self
 	new_supply_ship.final_destination_system = galaxy.target_system
 
 func accept_ship(ship):
-	if ship.next_system and ship.next_system != self: #check if ship is going to this system
+	if ship.next_system == null or ship.next_system != self: #check if ship is going to this system
 		return
-	print("Accepting at ", self, global_position)
+	#print("Accepting at ", self, global_position)
 	if self != ship.final_destination_system:
 		var next_destination : SolarSystem = galaxy.get_next_step(self, ship.final_destination_system)
 		if next_destination:
@@ -315,19 +318,20 @@ func accept_ship(ship):
 			await ship.target_reached
 			ship.next_system = next_destination
 			next_destination.connect_ship_target_reached_to_accept(ship)
-			print("done")
+			print("donewaiting")
 			#var destination_relative = next_destination.get_ship_recieve_point(ejection_direction)
 			
 			var destination_pos = ejection_point+ejection_direction*(global_position.distance_to(next_destination.global_position)-(system_action_region_radius+next_destination.get_system_active_region_radius()))
-			print("destination", destination_pos)
+			#print("destination", destination_pos)
 			ship.send_to_position(destination_pos)
 			
 			#await ship.target_reached
 			#next_destination.accept_ship(ship)
 			#print(next_destination.global_position)
 		else:
+			
 			add_ship_to_system_orbit(ship)
-			#print("ship reached dead end")
+			print("ship reached dead end")
 	else:
 		add_ship_to_system_orbit(ship)
 		#print("at final")
