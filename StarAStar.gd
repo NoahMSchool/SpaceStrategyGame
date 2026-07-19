@@ -13,7 +13,7 @@ func is_filtered(from_id: int, neighbor_id: int):
 	
 	if !from_star.team_ownership: #from not owned
 		return true
-	if from_star.team_ownership != current_team: #from not owned
+	if from_star.team_ownership.team_id != current_team.team_id: #from not owned
 		return true
 	
 	"""

@@ -2,6 +2,7 @@ extends Node3D
 class_name SolarSystem
 
 
+
 var team_ownership: Team  = null:
 	set(value):
 		if value:
@@ -294,6 +295,7 @@ func orbit_ships(delta):
 
 func generate_supply():
 	var new_supply_ship = SUPPLY_SHIP.instantiate()
+	new_supply_ship.team = team_ownership
 	add_ship_to_system_orbit(new_supply_ship)
 	new_supply_ship.set_global_position(global_position)
 	connect_ship_target_reached_to_accept(new_supply_ship)#make it so when ship reaches this system it is accepted in future (eg if it returns)
@@ -301,11 +303,14 @@ func generate_supply():
 	new_supply_ship.final_destination_system = galaxy.target_system
 
 func accept_ship(ship):
+	if team_ownership == null:
+		team_ownership = ship.team
+		galaxy.draw_algorithm_lines()
 	if ship.next_system == null or ship.next_system != self: #check if ship is going to this system
 		return
 	#print("Accepting at ", self, global_position)
 	if self != ship.final_destination_system:
-		var next_destination : SolarSystem = galaxy.get_next_step(self, ship.final_destination_system)
+		var next_destination : SolarSystem = galaxy.get_next_step(self.team_ownership, self, ship.final_destination_system)
 		if next_destination:
 			#print("start processing")
 			var ejection_direction = (next_destination.global_position-self.global_position).normalized()

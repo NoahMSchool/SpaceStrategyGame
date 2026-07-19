@@ -23,6 +23,8 @@ signal target_reached
 
 var follow_position : Vector3
 
+var team : Team
+
 func send_to_position(pos):
 	origin_poisition = global_position
 	target_position = pos

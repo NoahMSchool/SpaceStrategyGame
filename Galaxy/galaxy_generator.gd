@@ -3,6 +3,8 @@ extends Node3D
 const SYSTEM = preload("res://SolarSystem/solar_system.tscn")
 
 
+#const galaxy_radius = 100
+@export var disc_height = 10 #error if this is lower for some reason
 
 #in lightyears, typical solar systems are 5-10 apart
 @export var min_system_separation = 7.5
@@ -11,11 +13,10 @@ const SYSTEM = preload("res://SolarSystem/solar_system.tscn")
 	set (val):
 		print("Changing Max Connection to", val)
 		max_connection_distance = val
-		algo = make_astar_algorithm(max_connection_distance)
-		draw_algorithm_lines(algo)
+		if algo:
+			algo.max_distance = max_connection_distance
+			draw_algorithm_lines()
 
-#const galaxy_radius = 100
-@export var disc_height = 10
 
 var target_system : SolarSystem = null:
 	set(value):
@@ -49,7 +50,7 @@ func _ready() -> void:
 		target_system = systems[0]
 	
 	algo = make_astar_algorithm(max_connection_distance)
-	draw_algorithm_lines(algo)
+	draw_algorithm_lines()
 
 func get_system_positions()->Array[Vector3]:
 	#get positions
@@ -100,12 +101,12 @@ func get_system_positions()->Array[Vector3]:
 	return system_positions
 	
 
-func draw_algorithm_lines(algo: StarAStar3D):
+func draw_algorithm_lines():
 	Draw3D.delete_planet_lines()
 	for team in SpaceInfo.teams:
-		draw_algorithm_team_lines(algo, team)
+		draw_algorithm_team_lines(team)
 	
-func draw_algorithm_team_lines(algo: StarAStar3D, team : Team):
+func draw_algorithm_team_lines(team : Team):
 	var algo_points = algo.get_point_ids()
 	algo.current_team = team
 	for p1 in algo_points:
@@ -137,10 +138,11 @@ func make_astar_algorithm(max_distance):
 func set_system_disabled(sys: SolarSystem, disabled: bool = true):
 	algo.set_point_disabled(sys.get_instance_id(), disabled)
 	print("Setting disabled ", disabled, " on system ", sys)
-	draw_algorithm_lines(algo)
-func get_next_step(from, to):
+	draw_algorithm_lines()
+func get_next_step(team, from, to):
 	var next = null
 	if from and to and from != to:
+		algo.current_team = team
 		var path = algo.get_id_path(from.get_instance_id(), to.get_instance_id())
 		if path and path.size() > 1:
 			next = instance_from_id(path[1])

@@ -24,8 +24,7 @@ emission_energy_multiplier = 4.9
 
 [node name="Galaxy" type="Node3D" unique_id=1524020374]
 script = ExtResource("1_dkrcd")
-max_system_count = 13
-max_connection_distance = 12
+max_system_count = 20
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1426894719]
 environment = SubResource("Environment_7c7pm")
