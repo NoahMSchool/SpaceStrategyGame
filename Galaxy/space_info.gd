@@ -69,7 +69,7 @@ static var teams = [
 	Team.new(0, "PurplePinkPeople", Color(0.666, 0.515, 0.743, 1.0)),
 	Team.new(1, "YellowEnergyAliens", Color(1.274, 1.274, 0.518, 1.0)),
 	Team.new(2, "SpaceYetis", Color(0.549, 0.673, 0.846, 1.0)),
-	Team.new(3, "BugBugs", Color(0.387, 0.0, 0.659, 1.0)),
+	#Team.new(3, "BugBugs", Color(0.387, 0.0, 0.659, 1.0)),
 	
 ]
 

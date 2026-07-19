@@ -3,6 +3,7 @@ extends Node3D
 const SYSTEM = preload("res://SolarSystem/solar_system.tscn")
 
 
+
 #in lightyears, typical solar systems are 5-10 apart
 @export var min_system_separation = 7.5
 @export var max_system_count = 10
@@ -29,8 +30,30 @@ var root_system : SolarSystem
 var algo : StarAStar3D
 
 func _ready() -> void:
+	var system_positions = get_system_positions()
+	#print(system_positions.size())
+	for i in range(system_positions.size()-1):
+		var sp = system_positions[i]
+		var new_system = SYSTEM.instantiate()
+		$SystemContainer.add_child(new_system)
+		new_system.position = sp
+		new_system.rotation = Vector3.ZERO
+		new_system.name = "System" + str(i)
+		systems.append(new_system)
+	
+	for team in SpaceInfo.teams:
+		if systems[team.team_id]:
+			systems[team.team_id].team_ownership = team
+		
+	if systems.size()>0:
+		target_system = systems[0]
+	
+	algo = make_astar_algorithm(max_connection_distance)
+	draw_algorithm_lines(algo)
+
+func get_system_positions()->Array[Vector3]:
 	#get positions
-	var system_positions = []
+	var system_positions : Array[Vector3] = []
 	#Type One
 	"""
 	for i in range(max_system_count):
@@ -71,37 +94,29 @@ func _ready() -> void:
 			for sp in system_positions:
 				if pos.distance_to(sp) < min_system_separation:
 					found = false
-					break
-				
+					break	
 		system_positions.append(pos)
+	system_positions.shuffle() #shuffles positions
+	return system_positions
 	
-	#print(system_positions.size())
-	for i in range(system_positions.size()-1):
-		var sp = system_positions[i]
-		var new_system = SYSTEM.instantiate()
-		$SystemContainer.add_child(new_system)
-		new_system.position = sp
-		new_system.rotation = Vector3.ZERO
-		new_system.name = "System" + str(i)
-		systems.append(new_system)
-		
-	if systems.size()>0:
-		target_system = systems[0]
-	
-	algo = make_astar_algorithm(max_connection_distance)
-	draw_algorithm_lines(algo)
 
 func draw_algorithm_lines(algo: StarAStar3D):
 	Draw3D.delete_planet_lines()
+	for team in SpaceInfo.teams:
+		draw_algorithm_team_lines(algo, team)
+	
+func draw_algorithm_team_lines(algo: StarAStar3D, team : Team):
 	var algo_points = algo.get_point_ids()
+	algo.current_team = team
 	for p1 in algo_points:
 		var p1_pos = algo.get_point_position(p1)
 		var p1_connections = algo.get_point_connections(p1)
 		for p2 in p1_connections:
 			var p2_pos = algo.get_point_position(p2)
 			if not algo.is_filtered(p1, p2):
-				Draw3D.draw_line(p1_pos, p2_pos)
-	
+				Draw3D.draw_line(p1_pos, p2_pos, team.team_color)
+
+
 func make_astar_algorithm(max_distance):
 	var new_algo := StarAStar3D.new()
 	#print("Generating with max ", max_distance, " and systems ", systems.size())
@@ -109,7 +124,6 @@ func make_astar_algorithm(max_distance):
 		return new_algo
 		
 	new_algo.set_neighbor_filter_enabled(true)
-	new_algo.team_id = 2
 	new_algo.max_distance = max_distance
 	for sys in systems:
 		var id = sys.get_instance_id()

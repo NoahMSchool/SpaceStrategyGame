@@ -8,8 +8,8 @@ var team_name : String
 var team_color : Color
 var team_mat : Material
 
-var start_system : SolarSystem
-var controlled_systems = [SolarSystem]
+#var start_system : SolarSystem
+#var controlled_systems = [SolarSystem]
 var algorithm : StarAStar3D
 
 func _init(_team_id, _team_name: String, _team_color : Color) -> void:
